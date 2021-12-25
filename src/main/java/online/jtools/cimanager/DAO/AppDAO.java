@@ -1,9 +1,10 @@
 package online.jtools.cimanager.DAO;
 
+import online.jtools.cimanager.DAO.database.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import online.jtools.cimanager.models.User;
+import online.jtools.cimanager.models.pojo.User;
 
 import java.util.List;
 
@@ -24,11 +25,11 @@ public class AppDAO {
     public List<User> index() { return jdbcTemplate.query("SELECT * FROM public.\"Apps\"", new UserMapper()); }
 
     public User show(int id) {
-        return users.stream().filter(user -> user.getId() == id).findAny().orElse(null);
+        return null;/*users.stream().filter(user -> user.getId() == id).findAny().orElse(null)*/
     }
 
     public void save(User user) {
-        user.setId(++USERS_COUNT);
+//        user.setId(++USERS_COUNT);
         users.add(user);
     }
 }
