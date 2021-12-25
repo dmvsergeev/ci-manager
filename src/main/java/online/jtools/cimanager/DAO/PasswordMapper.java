@@ -1,6 +1,6 @@
 package online.jtools.cimanager.DAO;
 
-import online.jtools.cimanager.models.Password;
+import online.jtools.cimanager.models.pojo.Password;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

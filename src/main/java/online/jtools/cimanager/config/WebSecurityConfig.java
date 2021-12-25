@@ -47,35 +47,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Bean
-    public UserDetailsService users() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password("(bcrypt)$2a$12$NxhSkxoXWAgsSgEdRX0k5eyq2Y2C5WcuQ5IlJy.rxeP.lQbNXRd0O")
-                .roles("USER")
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password("$2a$12$Lg/zmfq.ZAk8WYYbYB/iCe8XAeEHSRFMJIcN62U9gtUOCrHMi5sby")
-                .roles("ADMIN","USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user, admin);
-    }
-
-    /*@Override
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-                .usersByUsernameQuery("select username, password, active from public.\"usr\" where username=?")
-                .authoritiesByUsernameQuery("select u.username, ur.roles from public.\"usr\" u inner join public.\"Roles\" ur on u.id = ur.user_id where u.username=?");
-    }*/
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+                .passwordEncoder(new BCryptPasswordEncoder())
+                .usersByUsernameQuery("select username, password, active from public.\"Users\" where username=?")
+                .authoritiesByUsernameQuery("select \n" +
+                        "u.username, ur.roles \n" +
+                        "from public.\"Users\" u \n" +
+                        "inner join public.\"Roles\" ur on u.id = ur.user_id \n" +
+                        "where u.username=?");
     }
-
 
 }

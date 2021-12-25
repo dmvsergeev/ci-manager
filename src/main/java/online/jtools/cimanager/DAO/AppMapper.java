@@ -1,7 +1,7 @@
 package online.jtools.cimanager.DAO;
 
 
-import online.jtools.cimanager.models.App;
+import online.jtools.cimanager.models.pojo.App;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

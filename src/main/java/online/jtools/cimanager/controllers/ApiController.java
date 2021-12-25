@@ -1,9 +1,9 @@
 package online.jtools.cimanager.controllers;
 
 import online.jtools.cimanager.DAO.PasswordDAO;
-import online.jtools.cimanager.DAO.UserDAO;
-import online.jtools.cimanager.models.PasswordsList;
-import online.jtools.cimanager.models.User;
+import online.jtools.cimanager.DAO.api.UserDAO;
+import online.jtools.cimanager.models.pojo.PasswordsList;
+import online.jtools.cimanager.models.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "/api")
+@CrossOrigin(origins = "http://localhost:8080/api")
 public class ApiController {
 
     private final UserDAO userDAO;
@@ -26,7 +26,7 @@ public class ApiController {
 
     @GetMapping("users")
     public List<User> index(Model model) {
-        return userDAO.index();
+        return userDAO.list();
     }
 
     @GetMapping("passwords")
@@ -36,7 +36,7 @@ public class ApiController {
 
     @GetMapping("user/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userDAO.show(id));
+        model.addAttribute("user", userDAO.get(id));
         return "users/detail";
     }
 
