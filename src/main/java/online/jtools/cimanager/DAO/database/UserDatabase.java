@@ -24,7 +24,7 @@ public class UserDatabase implements UserDAO {
 
     @Override
     public List<User> list() {
-        return jdbcTemplate.query("SELECT id, username, password, active FROM public.\"Users\"", new UserMapper());
+        return jdbcTemplate.query("SELECT id, username, name, email, password, active FROM public.\"Users\"", new UserMapper());
     }
 
     @Override

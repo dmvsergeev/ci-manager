@@ -1,5 +1,8 @@
-package online.jtools.cimanager.DAO;
+package online.jtools.cimanager.DAO.database;
 
+import online.jtools.cimanager.DAO.PasswordMapper;
+import online.jtools.cimanager.DAO.PasswordsListMapper;
+import online.jtools.cimanager.DAO.api.PasswordDAO;
 import online.jtools.cimanager.models.pojo.Password;
 import online.jtools.cimanager.models.pojo.PasswordsList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +12,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class PasswordDAO {
+public class PasswordDatabase implements PasswordDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public PasswordDAO(JdbcTemplate jdbcTemplate) {
+    public PasswordDatabase(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -28,19 +31,25 @@ public class PasswordDAO {
 
     public List<PasswordsList> getForUser() {
         return jdbcTemplate.query("SELECT " +
-                "u.user_id, u.user_name,..." +
-                "p.id, p.password, a.name as app " +
+                "u.id as id_user, u.username, u.email, u.name as user_name, " +
+                "p.id as id_password, p.password," +
+                "a.name as app_name, a.url, a.id as id_app " +
                 "FROM public.\"Users\" as u " +
-                "INNER JOIN public.\"Passwords\" as p on p.userId = u.id " +
+                "INNER JOIN public.\"Passwords\" as p on p.id_user = u.id " +
                 "INNER JOIN public.\"Apps\" as a ON a.id = p.id_app", new PasswordsListMapper());
     }
 
-    public Password show(int id) {
-        return passwords.stream().filter(password -> password.getId() == id).findAny().orElse(null);
+    @Override
+    public List<Password> passwords() {
+        return null;
+    }
+
+    @Override
+    public Password get(int id) {
+        return null;
     }
 
     public void save(Password password) {
-        password.setId(++USERS_COUNT);
         passwords.add(password);
     }
 }

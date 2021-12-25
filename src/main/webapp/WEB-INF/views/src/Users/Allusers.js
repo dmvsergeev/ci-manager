@@ -24,15 +24,18 @@ class Allusers extends Component {
                     <table id="userslist" class="table table-striped text-left">
                         <thead>
                         <tr>
-                            <th>Id пользователя</th><th>ФИО</th><th>Email</th><th>Действие</th>
+                            <th>Id пользователя</th><th>ФИО</th><th>Email</th><th>Username</th><th>Пароль</th><th>Права</th><th>Действие</th>
                         </tr>
                         </thead>
                     <tbody>
                         {clients.map(client =>
-                            <tr key={client.id}>
-                                <td>{client.id}</td>
+                            <tr key={client.id.id}>
+                                <td>{client.id.id}</td>
                                 <td><b>{client.name}</b></td>
                                 <td>{client.email}</td>
+                                <td>{client.username}</td>
+                                <td>{client.password}</td>
+                                <td>{client.roles}</td>
                                 <td><div class="btn btn-danger">Удалить</div></td>
                             </tr>
                         )}

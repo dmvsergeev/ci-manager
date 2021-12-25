@@ -1,6 +1,6 @@
 package online.jtools.cimanager.controllers;
 
-import online.jtools.cimanager.DAO.PasswordDAO;
+import online.jtools.cimanager.DAO.database.PasswordDatabase;
 import online.jtools.cimanager.DAO.api.UserDAO;
 import online.jtools.cimanager.models.pojo.PasswordsList;
 import online.jtools.cimanager.models.pojo.User;
@@ -16,10 +16,10 @@ import java.util.List;
 public class ApiController {
 
     private final UserDAO userDAO;
-    private final PasswordDAO passwordDAO;
+    private final PasswordDatabase passwordDAO;
 
     @Autowired
-    public ApiController(UserDAO userDAO, PasswordDAO passwordDAO) {
+    public ApiController(UserDAO userDAO, PasswordDatabase passwordDAO) {
         this.userDAO = userDAO;
         this.passwordDAO = passwordDAO;
     }
