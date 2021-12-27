@@ -1,4 +1,4 @@
-package online.jtools.cimanager.DAO;
+package online.jtools.cimanager.DAO.database.mapper;
 
 
 import online.jtools.cimanager.models.pojo.App;

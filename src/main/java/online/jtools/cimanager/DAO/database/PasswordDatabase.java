@@ -1,6 +1,6 @@
 package online.jtools.cimanager.DAO.database;
 
-import online.jtools.cimanager.DAO.PasswordMapper;
+import online.jtools.cimanager.DAO.database.mapper.PasswordMapper;
 import online.jtools.cimanager.DAO.PasswordsListMapper;
 import online.jtools.cimanager.DAO.api.PasswordDAO;
 import online.jtools.cimanager.models.pojo.Password;
