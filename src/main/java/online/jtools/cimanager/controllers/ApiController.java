@@ -1,7 +1,11 @@
 package online.jtools.cimanager.controllers;
 
+import online.jtools.cimanager.DAO.api.AppDAO;
+import online.jtools.cimanager.DAO.api.PasswordDAO;
 import online.jtools.cimanager.DAO.database.PasswordDatabase;
 import online.jtools.cimanager.DAO.api.UserDAO;
+import online.jtools.cimanager.models.pojo.App;
+import online.jtools.cimanager.models.pojo.AppsList;
 import online.jtools.cimanager.models.pojo.PasswordsList;
 import online.jtools.cimanager.models.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +20,14 @@ import java.util.List;
 public class ApiController {
 
     private final UserDAO userDAO;
-    private final PasswordDatabase passwordDAO;
+    private final PasswordDAO passwordDAO;
+    private final AppDAO appDAO;
 
     @Autowired
-    public ApiController(UserDAO userDAO, PasswordDatabase passwordDAO) {
+    public ApiController(UserDAO userDAO, PasswordDAO passwordDAO, AppDAO appDAO) {
         this.userDAO = userDAO;
         this.passwordDAO = passwordDAO;
+        this.appDAO = appDAO;
     }
 
     @GetMapping("users")
@@ -34,19 +40,19 @@ public class ApiController {
         return passwordDAO.getForUser();
     }
 
+    @GetMapping("apps")
+    public List<App> apps() {
+        return appDAO.getAll();
+    }
+
     @GetMapping("user/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userDAO.get(id));
         return "users/detail";
     }
 
-    @GetMapping("user/new")
-    public String newUser(@ModelAttribute("user") User user) {
-        return "users/new";
-    }
-
-    @PostMapping()
-    public boolean create(@ModelAttribute("user") User user) {
+    @PostMapping("user/create")
+    public boolean createUser(@ModelAttribute("user") User user) {
         userDAO.save(user);
         return true;
     }

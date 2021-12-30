@@ -27,4 +27,16 @@ public class FrontController {
         return "index";
     }
 
+    @GetMapping("apps")
+    public String apps(Model model) {
+
+        return "index";
+    }
+
+    @GetMapping("createuser")
+    public String createuser(Model model) {
+
+        return "index";
+    }
+
 }

@@ -34,7 +34,7 @@ public class UserDatabase implements UserDAO {
 
     @Override
     public void save(User user) {
-
+        user.save();
     }
 
 }

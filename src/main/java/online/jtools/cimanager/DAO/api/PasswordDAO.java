@@ -1,6 +1,7 @@
 package online.jtools.cimanager.DAO.api;
 
 import online.jtools.cimanager.models.pojo.Password;
+import online.jtools.cimanager.models.pojo.PasswordsList;
 
 import java.util.List;
 
@@ -10,4 +11,6 @@ public interface PasswordDAO {
     Password get(int id);
 
     void save(Password password);
+
+    List<PasswordsList> getForUser();
 }
