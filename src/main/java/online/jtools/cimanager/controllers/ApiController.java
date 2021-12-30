@@ -2,10 +2,10 @@ package online.jtools.cimanager.controllers;
 
 import online.jtools.cimanager.DAO.api.AppDAO;
 import online.jtools.cimanager.DAO.api.PasswordDAO;
-import online.jtools.cimanager.DAO.database.PasswordDatabase;
 import online.jtools.cimanager.DAO.api.UserDAO;
+import online.jtools.cimanager.controllers.validator.UserValidator;
+import online.jtools.cimanager.controllers.validator.exception.ValidationException;
 import online.jtools.cimanager.models.pojo.App;
-import online.jtools.cimanager.models.pojo.AppsList;
 import online.jtools.cimanager.models.pojo.PasswordsList;
 import online.jtools.cimanager.models.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +22,15 @@ public class ApiController {
     private final UserDAO userDAO;
     private final PasswordDAO passwordDAO;
     private final AppDAO appDAO;
+    private final UserValidator userValidator;
 
     @Autowired
-    public ApiController(UserDAO userDAO, PasswordDAO passwordDAO, AppDAO appDAO) {
+    public ApiController(UserDAO userDAO, PasswordDAO passwordDAO, AppDAO appDAO,
+                         UserValidator userValidator) {
         this.userDAO = userDAO;
         this.passwordDAO = passwordDAO;
         this.appDAO = appDAO;
+        this.userValidator = userValidator;
     }
 
     @GetMapping("users")
@@ -53,8 +56,13 @@ public class ApiController {
 
     @PostMapping("user/create")
     public boolean createUser(@ModelAttribute("user") User user) {
-        userDAO.save(user);
-        return true;
+        try {
+            userValidator.validate(user);
+            return userDAO.save(user);
+        } catch (ValidationException e) {
+//            logger.log(e);
+            return false;
+        }
     }
 
 }

@@ -9,5 +9,5 @@ public interface UserDAO {
 
     User get(int id);
 
-    void save(User user);
+    boolean save(User user);
 }

@@ -2,3 +2,5 @@
 /node_modules/
 /src/main/webapp/WEB-INF/views/node_modules/
 /target/
+out/
+/config/application.properties

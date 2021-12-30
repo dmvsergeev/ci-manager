@@ -6,9 +6,10 @@ import online.jtools.cimanager.models.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.UUID;
 
 @Component
 public class UserDatabase implements UserDAO {
@@ -33,8 +34,17 @@ public class UserDatabase implements UserDAO {
     }
 
     @Override
-    public void save(User user) {
-        user.save();
+    @Transactional
+    public boolean save(User user) {
+        final String id = UUID.randomUUID().toString();
+        final int result = jdbcTemplate.update("INSERT INTO public.\"Users\" (\"id\", \"username\",\"password\",\"name\",\"email\",\"active\") " +
+                "VALUES(?,?,?,?,?)", id, user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.isActive());
+        if (result != 0) {
+            roleDAO.save(id, user.getRoles());
+            return true;
+        } else {
+            throw new MyException("");
+        }
     }
 
 }
