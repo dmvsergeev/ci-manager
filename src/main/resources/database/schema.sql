@@ -1,5 +1,5 @@
 CREATE TABLE "Users" (
-    id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id char(36) PRIMARY KEY,
     name text,
     email text,
     username text,
@@ -7,11 +7,11 @@ CREATE TABLE "Users" (
     active boolean
 );
 
-CREATE UNIQUE INDEX "Users_pkey1" ON "Users"(id int4_ops);
+CREATE UNIQUE INDEX "Users_pkey1" ON "Users"(id);
 
 CREATE TABLE "Roles" (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    user_id integer,
+    user_id character(36),
     roles text
 );
 

@@ -1,7 +1,7 @@
-INSERT INTO "public"."Users"("username","password","name","email","active")
+INSERT INTO "public"."Users"("id","username","password","name","email","active")
 VALUES
-('admin','$2a$12$Lg/zmfq.ZAk8WYYbYB/iCe8XAeEHSRFMJIcN62U9gtUOCrHMi5sby','Dmitry Sergeev','dmvsergeev@gmail.com',TRUE),
-('user','$2a$12$NxhSkxoXWAgsSgEdRX0k5eyq2Y2C5WcuQ5IlJy.rxeP.lQbNXRd0O','Test User','testuser@gmail.com',TRUE);
+('1', 'admin','$2a$12$Lg/zmfq.ZAk8WYYbYB/iCe8XAeEHSRFMJIcN62U9gtUOCrHMi5sby','Dmitry Sergeev','dmvsergeev@gmail.com',TRUE),
+('2', 'user','$2a$12$NxhSkxoXWAgsSgEdRX0k5eyq2Y2C5WcuQ5IlJy.rxeP.lQbNXRd0O','Test User','testuser@gmail.com',TRUE);
 
 INSERT INTO "public"."Roles"("user_id","roles")
 VALUES

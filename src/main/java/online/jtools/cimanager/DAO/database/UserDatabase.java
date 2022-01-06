@@ -2,6 +2,7 @@ package online.jtools.cimanager.DAO.database;
 
 import online.jtools.cimanager.DAO.database.mapper.UserMapper;
 import online.jtools.cimanager.DAO.api.UserDAO;
+import online.jtools.cimanager.controllers.validator.exception.DbSaveException;
 import online.jtools.cimanager.models.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -34,16 +35,15 @@ public class UserDatabase implements UserDAO {
     }
 
     @Override
-    @Transactional
     public boolean save(User user) {
         final String id = UUID.randomUUID().toString();
         final int result = jdbcTemplate.update("INSERT INTO public.\"Users\" (\"id\", \"username\",\"password\",\"name\",\"email\",\"active\") " +
-                "VALUES(?,?,?,?,?)", id, user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.isActive());
+                "VALUES(?,?,?,?,?,?)", id, user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.isActive());
         if (result != 0) {
-            roleDAO.save(id, user.getRoles());
+            //roleDAO.save(id, user.getRoles());
             return true;
         } else {
-            throw new MyException("");
+            throw new DbSaveException("DB save error");
         }
     }
 

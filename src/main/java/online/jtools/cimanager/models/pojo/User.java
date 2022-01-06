@@ -2,6 +2,7 @@ package online.jtools.cimanager.models.pojo;
 
 import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.api.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Collections;
 import java.util.Set;

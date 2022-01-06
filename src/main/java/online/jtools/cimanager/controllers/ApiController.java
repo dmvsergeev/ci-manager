@@ -3,6 +3,7 @@ package online.jtools.cimanager.controllers;
 import online.jtools.cimanager.DAO.api.AppDAO;
 import online.jtools.cimanager.DAO.api.PasswordDAO;
 import online.jtools.cimanager.DAO.api.UserDAO;
+import online.jtools.cimanager.controllers.mapper.UserMapper;
 import online.jtools.cimanager.controllers.validator.UserValidator;
 import online.jtools.cimanager.controllers.validator.exception.ValidationException;
 import online.jtools.cimanager.models.pojo.App;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -55,14 +57,18 @@ public class ApiController {
     }
 
     @PostMapping("user/create")
-    public boolean createUser(@ModelAttribute("user") User user) {
+    public boolean createUser(@RequestBody Map<String,Object> body) {
         try {
+            User user = new UserMapper().createUserRequest(body);
             userValidator.validate(user);
             return userDAO.save(user);
         } catch (ValidationException e) {
+            System.out.println(e);
 //            logger.log(e);
+
             return false;
         }
+
     }
 
 }
