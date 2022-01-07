@@ -3,23 +3,25 @@ package online.jtools.cimanager.models.pojo;
 import online.jtools.cimanager.models.api.DefaultIdentifier;
 import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.api.Model;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
 public class User extends Model {
-
-    private final Identifier id;
+    @Nullable private final Identifier id;
     private boolean valid_id;
-    private final String name;
+    @NotNull private final String name;
     private boolean valid_name;
-    private final String email;
-    private final String username;
-    private final String password;
+    @NotNull private final String email;
+    @NotNull private final String username;
+    @NotNull private final String password;
     private final boolean active;
-    private final Set<Role> roles;
+    @NotNull private final Set<Role> roles;
 
-    public User(Identifier id, String name, String email, String username, String password, boolean active, Set<Role> roles) {
+    public User(@NotNull Identifier id, @NotNull String name, @NotNull String email, @NotNull String username, @NotNull String password, boolean active, @NotNull Set<Role> roles) {
         this.id = id;
         valid_id = true;
         this.name = name;
@@ -31,22 +33,33 @@ public class User extends Model {
         this.roles = roles;
     }
 
-    public User(Identifier id, String name, String email, String username) {
+    public User(@NotNull String name, @NotNull String email, @NotNull String username, @NotNull String password, boolean active, @NotNull Set<Role> roles) {
+        this.id = null;
+        valid_id = true;
+        this.name = name;
+        valid_name = true;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.roles = roles;
+    }
+
+    public User(@NotNull Identifier id, @NotNull String name, @NotNull String email, @NotNull String username) {
         this(id, name, email, username, "", false, Collections.emptySet());
     }
 
-    public User(String name, String email, String username) {
-        this(DefaultIdentifier.generateId(), name, email, username, "", false, Collections.emptySet());
+    public User(@NotNull String name, @NotNull String email, @NotNull String username) {
+        this(name, email, username, "", false, Collections.emptySet());
     }
 
-    public User(Identifier id) {
-        this(id, null, null, null, "", false, Collections.emptySet());
-        valid_id = true;
-        valid_name = false;
-    }
-
+    @NotNull
     public Identifier getId() {
-        return id;
+        return Objects.requireNonNull(id);
+    }
+
+    public boolean isNew() {
+        return id == null;
     }
 
     public String getName() {
@@ -55,7 +68,7 @@ public class User extends Model {
         return name;
     }
 
-    public String getEmail() {
+    public @NotNull String getEmail() {
         return email;
     }
 
@@ -64,7 +77,7 @@ public class User extends Model {
         return username;
     }
 
-    public String getPassword() {
+    public @NotNull String getPassword() {
         return password;
     }
 
@@ -72,7 +85,7 @@ public class User extends Model {
         return active;
     }
 
-    public Set<Role> getRoles() {
+    public @NotNull Set<Role> getRoles() {
         return roles;
     }
 }

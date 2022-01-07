@@ -9,7 +9,7 @@ public class DefaultIdentifier implements Identifier {
         this.id = id;
     }
 
-    public static Identifier generateId() {
+    public static DefaultIdentifier generateId() {
         final String id = UUID.randomUUID().toString();
         return new DefaultIdentifier(id);
     }

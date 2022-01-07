@@ -8,6 +8,7 @@ import online.jtools.cimanager.controllers.mapper.UserMapper;
 import online.jtools.cimanager.controllers.validator.AppValidator;
 import online.jtools.cimanager.controllers.validator.UserValidator;
 import online.jtools.cimanager.controllers.validator.exception.ValidationException;
+import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.pojo.App;
 import online.jtools.cimanager.models.pojo.PasswordsList;
 import online.jtools.cimanager.models.pojo.User;
@@ -61,16 +62,11 @@ public class ApiController {
     }
 
     @PostMapping("user/create")
-    public String createUser(@RequestBody Map<String,Object> body) {
-        try {
-            User user = new UserMapper().createUserRequest(body);
-            userValidator.validate(user);
-            return userDAO.save(user);
-        } catch (ValidationException e) {
-            System.out.println(e);
-            return "false";
-        }
-
+    @ResponseBody
+    public Identifier createUser(@RequestBody Map<String,Object> body) {
+        User user = new UserMapper().createUserRequest(body);
+        userValidator.validate(user);
+        return userDAO.save(user);
     }
 
     @PostMapping("app/create")

@@ -1,5 +1,6 @@
 package online.jtools.cimanager.DAO.api;
 
+import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.pojo.User;
 
 import java.util.List;
@@ -9,5 +10,5 @@ public interface UserDAO {
 
     User get(int id);
 
-    String save(User user);
+    Identifier save(User user);
 }
