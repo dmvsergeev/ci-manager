@@ -3,7 +3,9 @@ package online.jtools.cimanager.controllers;
 import online.jtools.cimanager.DAO.api.AppDAO;
 import online.jtools.cimanager.DAO.api.PasswordDAO;
 import online.jtools.cimanager.DAO.api.UserDAO;
+import online.jtools.cimanager.controllers.mapper.AppMapper;
 import online.jtools.cimanager.controllers.mapper.UserMapper;
+import online.jtools.cimanager.controllers.validator.AppValidator;
 import online.jtools.cimanager.controllers.validator.UserValidator;
 import online.jtools.cimanager.controllers.validator.exception.ValidationException;
 import online.jtools.cimanager.models.pojo.App;
@@ -25,14 +27,16 @@ public class ApiController {
     private final PasswordDAO passwordDAO;
     private final AppDAO appDAO;
     private final UserValidator userValidator;
+    private final AppValidator appValidator;
 
     @Autowired
     public ApiController(UserDAO userDAO, PasswordDAO passwordDAO, AppDAO appDAO,
-                         UserValidator userValidator) {
+                         UserValidator userValidator, AppValidator appValidator) {
         this.userDAO = userDAO;
         this.passwordDAO = passwordDAO;
         this.appDAO = appDAO;
         this.userValidator = userValidator;
+        this.appValidator = appValidator;
     }
 
     @GetMapping("users")
@@ -57,16 +61,27 @@ public class ApiController {
     }
 
     @PostMapping("user/create")
-    public boolean createUser(@RequestBody Map<String,Object> body) {
+    public String createUser(@RequestBody Map<String,Object> body) {
         try {
             User user = new UserMapper().createUserRequest(body);
             userValidator.validate(user);
             return userDAO.save(user);
         } catch (ValidationException e) {
             System.out.println(e);
-//            logger.log(e);
+            return "false";
+        }
 
-            return false;
+    }
+
+    @PostMapping("app/create")
+    public String createApp(@RequestBody Map<String,Object> body) {
+        try {
+            App app = new AppMapper().createAppRequest(body);
+            appValidator.validate(app);
+            return appDAO.save(app);
+        } catch (ValidationException e) {
+            System.out.println(e);
+            return "false";
         }
 
     }

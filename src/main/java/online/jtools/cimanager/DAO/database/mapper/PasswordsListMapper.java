@@ -17,7 +17,7 @@ public class PasswordsListMapper implements RowMapper<PasswordsList> {
                 rs.getInt("id_password"),
                 rs.getString("password"),
                 new App(rs.getInt("id_app"), rs.getString("app_name"),rs.getString("url")),
-                new User(new DefaultIdentifier(rs.getInt("id_user")),
+                new User(new DefaultIdentifier(rs.getString("id_user")),
                         rs.getString("user_name"),
                         rs.getString("email"),
                         rs.getString("username"))

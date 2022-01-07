@@ -28,7 +28,7 @@ CREATE UNIQUE INDEX "Apps_pkey1" ON "Apps"(id int4_ops);
 CREATE TABLE "Passwords" (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_app integer,
-    id_user integer,
+    id_user character(36),
     password text
 );
 

@@ -1,13 +1,20 @@
 package online.jtools.cimanager.models.api;
 
-public class DefaultIdentifier implements Identifier {
-    private final int id;
+import java.util.UUID;
 
-    public DefaultIdentifier(int id) {
+public class DefaultIdentifier implements Identifier {
+    private final String id;
+
+    public DefaultIdentifier(String id) {
         this.id = id;
     }
 
-    public int getId() {
+    public static Identifier generateId() {
+        final String id = UUID.randomUUID().toString();
+        return new DefaultIdentifier(id);
+    }
+
+    public String getId() {
         return id;
     }
 }

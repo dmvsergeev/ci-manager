@@ -1,7 +1,6 @@
 package online.jtools.cimanager.DAO.api;
 
 import online.jtools.cimanager.models.pojo.App;
-import online.jtools.cimanager.models.pojo.AppsList;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ public interface AppDAO {
 
     App get(int id);
 
-    void save(App app);
+    String save(App app);
 
     List<App> getAll();
 }

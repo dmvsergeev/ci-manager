@@ -8,11 +8,10 @@ class CreateUser extends Component {
 constructor() {
         super();
         this.state = {
-          id: '3245',
           name: '',
           email: '',
           username: '',
-          ModelAttribute: 'user'
+          id_user: 0
         };
       }
 
@@ -24,47 +23,68 @@ constructor() {
       onSubmit = (e) => {
         e.preventDefault();
 
-        const { id, name, email, username, ModelAttribute } = this.state;
+        const { name, email, username, id_user } = this.state;
 
-        axios.post('/api/user/create', { id, name, email, username, ModelAttribute })
-          .then((result) => {
-
-          });
+        axios.post('/api/user/create', { name, email, username, id_user })
+          .then((res => this.setState({id_user: res.data})))
+          //.then((result) => {});
       }
 
+
+
       render() {
-        const { id, name, email, username, ModelAttribute } = this.state;
+        const { name, email, username, id_user } = this.state;
         return (
           <form onSubmit={this.onSubmit}>
+          <div className="form-group text-left">
+              <label htmlFor="emailField">Email address</label>
+                <input
+                              className="form-control"
+                              type="email"
+                              name="email"
+                              id="emailField"
+                              placeholder="Email"
+                              value={email}
+                              onChange={this.onChange}
+                            />
+
+              </div>
+
+<div className="form-group text-left">
+              <label htmlFor="usernameField">Имя пользователя</label>
+
             <input
-              type="text"
-              name="email"
-              value={email}
-              onChange={this.onChange}
-            />
-            <input
+              className="form-control"
               type="text"
               name="username"
+              id="usernameField"
               value={username}
+              placeholder="Имя пользователя"
               onChange={this.onChange}
             />
+            </div>
+
+            <div className="form-group text-left">
+                          <label htmlFor="nameField">ФИО</label>
             <input
+              className="form-control"
               type="text"
               name="name"
+              id="nameField"
               value={name}
+              placeholder="ФИО"
               onChange={this.onChange}
             />
+            </div>
+
             <input
-                          type="hidden"
-                          name="ModelAttribute"
-                          value="user"
-                        />
-            <input
-              type="text"
-              name="id"
-              value="123123"
+            type="hidden"
+            id="id_user"
+            name="id_user"
+            value={id_user}
             />
-            <button type="submit">Submit</button>
+
+            <button className="btn btn-default" type="submit">Сохранить</button>
           </form>
         );
       }

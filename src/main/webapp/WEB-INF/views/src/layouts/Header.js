@@ -6,12 +6,13 @@ function Header() {
     return (
         <header>
             <nav>
-                <ul class="topnav">
-                    <li class="btn btn-default"><Link to='/'>Главная</Link></li>
-                    <li class="btn btn-default"><Link to='/allusers'>Пользователи</Link></li>
-                    <li class="btn btn-default"><Link to='/createuser'>Создать пользователя</Link></li>
-                    <li class="btn btn-default"><Link to='/apps'>Приложения</Link></li>
-                    <li class="btn btn-default"><Link to='/passwords'>Пароли</Link></li>
+                <ul className="topnav">
+                    <li><Link className="btn btn-default btn-sm" to='/'>Главная</Link></li>
+                    <li><Link className="btn btn-default btn-sm" to='/allusers'>Пользователи</Link></li>
+                    <li><Link className="btn btn-default btn-sm" to='/createuser'>Создать пользователя</Link></li>
+                    <li><Link className="btn btn-default btn-sm" to='/apps'>Приложения</Link></li>
+                    <li><Link className="btn btn-default btn-sm" to='/createapp'>Создать Приложение</Link></li>
+                    <li><Link className="btn btn-default btn-sm" to='/passwords'>Мои Пароли</Link></li>
                 </ul>
             </nav>
         </header>

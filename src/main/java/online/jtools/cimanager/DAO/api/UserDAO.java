@@ -9,5 +9,5 @@ public interface UserDAO {
 
     User get(int id);
 
-    boolean save(User user);
+    String save(User user);
 }

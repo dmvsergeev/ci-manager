@@ -6,6 +6,7 @@ import Users from "./Users/Users";
 import Allusers from "./Users/Allusers";
 import Apps from "./Apps/Apps";
 import CreateUser from "./Users/CreateUser";
+import CreateApp from "./Apps/CreateApp";
 
 function Content() {
     return (
@@ -17,6 +18,7 @@ function Content() {
                 <Route path='/allusers' component={Allusers}/>
                 <Route path='/apps' component={Apps}/>
                 <Route path='/createuser' component={CreateUser}/>
+                <Route path='/createapp' component={CreateApp}/>
             </Switch>
 
         </div>

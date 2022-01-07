@@ -19,7 +19,7 @@ class Passwords extends Component {
 
             <div>
                 <h2>Пароли</h2>
-                <table id="passwordslist" class="table table-striped text-left">
+                <table id="passwordslist" className="table table-striped text-left">
                     <thead>
                     <tr><th>Id</th><th>Приложение</th><th>Мои Пароли</th><th>Действия</th></tr>
                     </thead>

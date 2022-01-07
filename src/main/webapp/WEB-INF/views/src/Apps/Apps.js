@@ -30,8 +30,8 @@ class Apps extends Component {
                         <td><b>{app_item.name}</b></td>
                         <td>{app_item.url}</td>
                         <td>
-                            <div className="btn btn-primary">Редактировать</div>
-                            <div className="btn btn-danger">Удалить</div>
+                            <div className="btn btn-primary btn-sm">Редактировать</div>
+                            <div className="btn btn-danger btn-sm">Удалить</div>
                         </td>
                     </tr>
                 )}

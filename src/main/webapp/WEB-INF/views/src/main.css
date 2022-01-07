@@ -2,3 +2,8 @@
     padding: 20px;
     text-align: center;
 }
+
+.topnav li {
+    display: inline-block;
+    margin: 5px;
+}

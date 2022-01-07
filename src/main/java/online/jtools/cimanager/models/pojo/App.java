@@ -10,6 +10,12 @@ public class App {
 
     }
 
+    public App(String name, String url) {
+        this.name = name;
+        this.url = url;
+
+    }
+
     public App(int id, String name, String url) {
         this.id = id;
         this.name = name;

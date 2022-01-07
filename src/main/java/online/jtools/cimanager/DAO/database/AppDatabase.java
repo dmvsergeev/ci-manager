@@ -1,12 +1,9 @@
 package online.jtools.cimanager.DAO.database;
 
-import online.jtools.cimanager.DAO.database.mapper.AppsListMapper;
-import online.jtools.cimanager.DAO.database.mapper.PasswordsListMapper;
 import online.jtools.cimanager.DAO.api.AppDAO;
 import online.jtools.cimanager.DAO.database.mapper.AppMapper;
+import online.jtools.cimanager.controllers.validator.exception.DbSaveException;
 import online.jtools.cimanager.models.pojo.App;
-import online.jtools.cimanager.models.pojo.AppsList;
-import online.jtools.cimanager.models.pojo.PasswordsList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -44,7 +41,14 @@ public class AppDatabase implements AppDAO {
     }
 
     @Override
-    public void save(App app) {
-
+    public String save(App app) {
+        final int result = jdbcTemplate.update("INSERT INTO public.\"Apps\" (\"name\",\"url\") " +
+                "VALUES(?,?)", app.getName(), app.getUrl());
+        if (result != 0) {
+            //roleDAO.save(id, user.getRoles());
+            return "";
+        } else {
+            throw new DbSaveException("DB save error");
+        }
     }
 }
