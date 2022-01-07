@@ -9,6 +9,7 @@ import online.jtools.cimanager.controllers.validator.AppValidator;
 import online.jtools.cimanager.controllers.validator.UserValidator;
 import online.jtools.cimanager.controllers.validator.exception.ValidationException;
 import online.jtools.cimanager.models.api.Identifier;
+import online.jtools.cimanager.models.error.ResponseError;
 import online.jtools.cimanager.models.pojo.App;
 import online.jtools.cimanager.models.pojo.PasswordsList;
 import online.jtools.cimanager.models.pojo.User;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -79,7 +81,14 @@ public class ApiController {
             System.out.println(e);
             return "false";
         }
-
     }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseBody
+    public ResponseError handleException(ValidationException ex, HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return new ResponseError(ex.getCode(), ex.getMessage());
+    }
+
 
 }

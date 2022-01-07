@@ -68,23 +68,6 @@ public class Config implements WebMvcConfigurer {
                 .addResourceLocations("/resources/", "/WEB-INF/views/distr/");
     }
 
-    /*@Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/cimanager");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("1905619056");
-
-        return dataSource;
-    }*/
-
-    /*@Bean
-    public JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate(dataSource());
-    }*/
-
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
     }

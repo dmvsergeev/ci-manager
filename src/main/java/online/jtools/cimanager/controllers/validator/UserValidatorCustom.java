@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class UserValidatorCustom implements UserValidator {
     @Override
     public void validate(User user) throws ValidationException {
-        if (user.getEmail() == null || user.getEmail().isEmpty()) {
+        if (user.getEmail().isEmpty()) {
             throw new EmptyEmailException(user.getName() + " has empty email");
         }
     }
