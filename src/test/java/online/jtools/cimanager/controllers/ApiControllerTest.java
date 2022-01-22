@@ -6,6 +6,8 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -15,9 +17,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.net.URI;
@@ -25,7 +31,8 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes=SecurityConfiguration.class
+        ,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(initializers = {ApiControllerTest.Initializer.class})
 @TestPropertySource(locations = "classpath:properties.properties")
 public class ApiControllerTest extends TestCase {
@@ -66,6 +73,26 @@ public class ApiControllerTest extends TestCase {
     }
 
     @Test
+    public void setUserPasswordNotEmpty() throws URISyntaxException {
+        final String baseUrl = "http://localhost:" + randomServerPort + "/api/password/set";
+        URI uri = new URI(baseUrl);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");
+
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(Map.of("id_user", "1",
+                "id_app", "8",
+                "password", "123"), headers);
+
+        ResponseEntity<String> result = this.restTemplate.postForEntity(uri, request, String.class);
+
+        //Verify request succeed
+        Assert.assertEquals(200, result.getStatusCodeValue());
+        {
+            Assert.assertTrue(Boolean.parseBoolean(result.getBody()));
+        }
+    }
+
+    @Test
     public void createUserWithoutEmail() throws URISyntaxException {
         final String baseUrl = "http://localhost:" + randomServerPort + "/api/user/create";
         URI uri = new URI(baseUrl);
@@ -94,5 +121,7 @@ public class ApiControllerTest extends TestCase {
                     "spring.datasource.password=" + postgreSQLContainer.getPassword()
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
+
     }
+
 }

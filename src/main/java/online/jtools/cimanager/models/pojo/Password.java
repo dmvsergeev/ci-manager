@@ -17,9 +17,19 @@ public class Password {
         this.password = password;
     }
 
+    public Password(int id_app, int id_user, String password) {
+        this.id_app = id_app;
+        this.id_user = id_user;
+        this.password = password;
+    }
+
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean isNew() {
+        return id == 0;
     }
 
     public void setPassword(String password) {

@@ -3,14 +3,17 @@ package online.jtools.cimanager.controllers;
 import online.jtools.cimanager.DAO.api.AppDAO;
 import online.jtools.cimanager.DAO.api.PasswordDAO;
 import online.jtools.cimanager.DAO.api.UserDAO;
+import online.jtools.cimanager.controllers.mapper.PasswordMapper;
 import online.jtools.cimanager.controllers.mapper.AppMapper;
 import online.jtools.cimanager.controllers.mapper.UserMapper;
 import online.jtools.cimanager.controllers.validator.AppValidator;
+import online.jtools.cimanager.controllers.validator.PasswordValidator;
 import online.jtools.cimanager.controllers.validator.UserValidator;
 import online.jtools.cimanager.controllers.validator.exception.ValidationException;
 import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.error.ResponseError;
 import online.jtools.cimanager.models.pojo.App;
+import online.jtools.cimanager.models.pojo.Password;
 import online.jtools.cimanager.models.pojo.PasswordsList;
 import online.jtools.cimanager.models.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +34,17 @@ public class ApiController {
     private final AppDAO appDAO;
     private final UserValidator userValidator;
     private final AppValidator appValidator;
+    private final PasswordValidator passwordValidator;
 
     @Autowired
     public ApiController(UserDAO userDAO, PasswordDAO passwordDAO, AppDAO appDAO,
-                         UserValidator userValidator, AppValidator appValidator) {
+                         UserValidator userValidator, AppValidator appValidator, PasswordValidator passwordValidator) {
         this.userDAO = userDAO;
         this.passwordDAO = passwordDAO;
         this.appDAO = appDAO;
         this.userValidator = userValidator;
         this.appValidator = appValidator;
+        this.passwordValidator = passwordValidator;
     }
 
     @GetMapping("users")
@@ -69,6 +74,15 @@ public class ApiController {
         User user = new UserMapper().createUserRequest(body);
         userValidator.validate(user);
         return userDAO.save(user);
+    }
+
+    @PostMapping("password/set")
+    @ResponseBody
+    public boolean setPassword(@RequestBody Map<String,Object> body) {
+        Password password = new PasswordMapper().createPasswordRequest(body);
+        passwordValidator.validate(password);
+        passwordDAO.save(password);
+        return true;
     }
 
     @PostMapping("app/create")

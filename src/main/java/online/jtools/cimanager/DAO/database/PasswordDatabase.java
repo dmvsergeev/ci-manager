@@ -3,6 +3,7 @@ package online.jtools.cimanager.DAO.database;
 import online.jtools.cimanager.DAO.database.mapper.PasswordMapper;
 import online.jtools.cimanager.DAO.database.mapper.PasswordsListMapper;
 import online.jtools.cimanager.DAO.api.PasswordDAO;
+import online.jtools.cimanager.controllers.validator.exception.DbSaveException;
 import online.jtools.cimanager.models.pojo.Password;
 import online.jtools.cimanager.models.pojo.PasswordsList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,14 @@ public class PasswordDatabase implements PasswordDAO {
     }
 
     public void save(Password password) {
-        passwords.add(password);
+        if (password.isNew()) {
+            final int result = jdbcTemplate.update("INSERT INTO public.\"Passwords\" (\"id_app\",\"id_user\",\"password\") " +
+                    "VALUES(?,?,?)", password.getId_app(), password.getId_user(), password.getPassword());
+            if (result != 0) {
+                //roleDAO.save(id, user.getRoles());
+            } else {
+                throw new DbSaveException("DB save error");
+            }
+        }
     }
 }
