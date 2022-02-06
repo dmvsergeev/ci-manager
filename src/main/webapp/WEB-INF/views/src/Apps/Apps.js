@@ -21,12 +21,11 @@ class Apps extends Component {
                 <h2>Список приложений</h2>
                 <table id="apps_list" class="table table-striped text-left">
                     <thead>
-                    <tr><th>Id</th><th>Название приложения</th><th>URL</th><th>Действие</th></tr>
+                    <tr><th>Название приложения</th><th>URL</th><th>Действие</th></tr>
                     </thead>
                     <tbody>
                 {apps_list.map(app_item =>
                     <tr key={app_item.id_app}>
-                        <td>{app_item.id_app}</td>
                         <td><b>{app_item.name}</b></td>
                         <td>{app_item.url}</td>
                         <td>

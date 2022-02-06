@@ -12,17 +12,16 @@ import online.jtools.cimanager.controllers.validator.UserValidator;
 import online.jtools.cimanager.controllers.validator.exception.ValidationException;
 import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.error.ResponseError;
-import online.jtools.cimanager.models.pojo.App;
-import online.jtools.cimanager.models.pojo.Password;
-import online.jtools.cimanager.models.pojo.PasswordsList;
-import online.jtools.cimanager.models.pojo.User;
+import online.jtools.cimanager.models.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -60,6 +59,33 @@ public class ApiController {
     @GetMapping("apps")
     public List<App> apps() {
         return appDAO.getAll();
+    }
+
+    @GetMapping("topmenu")
+    public List<MenuLink> topmenu() {
+
+        List<MenuLink> topMenu = new ArrayList<>();
+
+        /*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentName = authentication.getName();*/
+
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+
+        System.out.println(authorities);
+
+        topMenu.add( new MenuLink("Мои пароли", "/passwords" ));
+
+        if (User.userHasAuthority("ROLE_ADMIN")) {
+
+            topMenu.add(new MenuLink("Пользователи", "/allusers"));
+            topMenu.add(new MenuLink("Создать пользователя", "/createuser"));
+            topMenu.add(new MenuLink("Приложения", "/apps"));
+            topMenu.add(new MenuLink("Создать Приложение", "/createapp"));
+
+        }
+
+        return topMenu;
+
     }
 
     @GetMapping("user/{id}")

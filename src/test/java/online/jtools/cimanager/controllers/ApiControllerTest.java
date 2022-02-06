@@ -2,6 +2,7 @@ package online.jtools.cimanager.controllers;
 
 import junit.framework.TestCase;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,6 +48,13 @@ public class ApiControllerTest extends TestCase {
             .withDatabaseName("integration-tests-db")
             .withUsername("sa")
             .withPassword("sa");
+
+    @Before
+    public void loginBeforeRequests() throws URISyntaxException {
+
+        
+
+    }
 
     @Test
     public void simpleCreateUser() throws URISyntaxException {

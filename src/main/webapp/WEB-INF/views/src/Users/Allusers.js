@@ -24,7 +24,7 @@ class Allusers extends Component {
                     <table id="userslist" className="table table-striped text-left">
                         <thead>
                         <tr>
-                            <th>Id пользователя</th><th>ФИО</th><th>Email</th><th>Username</th><th>Пароль</th><th>Права</th><th>Действие</th>
+                            <th>Id пользователя</th><th>ФИО</th><th>Email</th><th>Username</th><th>Действие</th>
                         </tr>
                         </thead>
                     <tbody>
@@ -34,8 +34,6 @@ class Allusers extends Component {
                                 <td><b>{client.name}</b></td>
                                 <td>{client.email}</td>
                                 <td>{client.username}</td>
-                                <td>{client.password}</td>
-                                <td>{client.roles}</td>
                                 <td><div className="btn btn-danger">Удалить</div></td>
                             </tr>
                         )}

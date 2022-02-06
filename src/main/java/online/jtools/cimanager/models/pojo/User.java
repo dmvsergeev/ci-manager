@@ -5,10 +5,11 @@ import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.api.Model;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class User extends Model {
     @Nullable private final Identifier id;
@@ -87,5 +88,18 @@ public class User extends Model {
 
     public @NotNull Set<Role> getRoles() {
         return roles;
+    }
+
+    public static boolean userHasAuthority(String authority) {
+
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+
+        for (GrantedAuthority grantedAuthority : authorities) {
+            if (authority.equals(grantedAuthority.getAuthority())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

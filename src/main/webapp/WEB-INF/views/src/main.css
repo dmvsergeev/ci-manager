@@ -7,3 +7,8 @@
     display: inline-block;
     margin: 5px;
 }
+
+.passwordSet {
+    min-width: 130px;
+    display: inline-block;
+}

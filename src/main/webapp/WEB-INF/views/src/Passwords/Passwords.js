@@ -21,17 +21,17 @@ class Passwords extends Component {
                 <h2>Пароли</h2>
                 <table id="passwordslist" className="table table-striped text-left">
                     <thead>
-                    <tr><th>Id</th><th>Приложение</th><th>Мои Пароли</th><th>Действия</th></tr>
+                    <tr><th>Приложение</th><th>Пароль</th><th>Действия</th></tr>
                     </thead>
                     <tbody>
                 {passwords.map(password_item =>
                     <tr key={password_item.app.id}>
-                        <td>{password_item.app.id}</td>
                         <td><b>{password_item.app.name}</b> (<a href={password_item.app.url} className="morebutton" target="_blank">перейти</a>)</td>
-                        <td>{password_item.password}</td>
+                        <td><span className="passwordSet" id={ 'password_' + password_item.app.id}>{password_item.password}</span><div class="btn btn-default" data-password-id={ 'password_' + password_item.app.id}>Скопировать</div></td>
                         <td>
-                            <div className="btn btn-primary">Редактировать</div>
-                            <div className="btn btn-danger">Удалить</div>
+                            <a href={ '/setpassword?id_app=' + password_item.app.id}>
+                                <div className="btn btn-primary">Сменить пароль</div>
+                            </a>
                         </td>
                     </tr>
                 )}

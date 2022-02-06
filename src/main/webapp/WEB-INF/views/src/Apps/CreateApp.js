@@ -25,7 +25,7 @@ constructor() {
 
         axios.post('/api/app/create', { name, url })
           .then((result) => {
-
+            location.replace('/apps');
           });
       }
 

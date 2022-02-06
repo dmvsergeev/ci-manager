@@ -7,6 +7,8 @@ import Allusers from "./Users/Allusers";
 import Apps from "./Apps/Apps";
 import CreateUser from "./Users/CreateUser";
 import CreateApp from "./Apps/CreateApp";
+import SetPassword from "./Passwords/SetPassword";
+import TopMenu from "./Menu/TopMenu";
 
 function Content() {
     return (
@@ -19,6 +21,7 @@ function Content() {
                 <Route path='/apps' component={Apps}/>
                 <Route path='/createuser' component={CreateUser}/>
                 <Route path='/createapp' component={CreateApp}/>
+                <Route path='/setpassword' component={SetPassword}/>
             </Switch>
 
         </div>

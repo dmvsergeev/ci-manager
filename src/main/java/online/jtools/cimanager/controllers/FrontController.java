@@ -39,4 +39,10 @@ public class FrontController {
         return "index";
     }
 
+    @GetMapping("setpassword")
+    public String setpassword(Model model) {
+
+        return "index";
+    }
+
 }

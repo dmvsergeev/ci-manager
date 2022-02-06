@@ -27,7 +27,9 @@ constructor() {
 
         axios.post('/api/user/create', { name, email, username, id_user })
           .then((res => this.setState({id_user: res.data})))
-          //.then((result) => {});
+          .then((result) => {
+            location.replace('/allusers');
+          });
       }
 
 
