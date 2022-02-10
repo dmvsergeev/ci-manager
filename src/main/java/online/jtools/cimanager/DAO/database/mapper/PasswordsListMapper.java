@@ -21,8 +21,6 @@ public class PasswordsListMapper implements RowMapper<PasswordsList> {
 
         TextEncryptor encryptor = Encryptors.text(password, salt);
 
-        //String encryptedPassword = encryptor.encrypt(rs.getString("password"));
-
         String decryptedPassword = encryptor.decrypt(rs.getString("password"));
 
         return new PasswordsList(

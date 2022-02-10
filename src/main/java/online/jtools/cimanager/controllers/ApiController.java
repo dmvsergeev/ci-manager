@@ -1,8 +1,6 @@
 package online.jtools.cimanager.controllers;
 
-import online.jtools.cimanager.DAO.api.AppDAO;
-import online.jtools.cimanager.DAO.api.PasswordDAO;
-import online.jtools.cimanager.DAO.api.UserDAO;
+import online.jtools.cimanager.DAO.api.*;
 import online.jtools.cimanager.controllers.mapper.PasswordMapper;
 import online.jtools.cimanager.controllers.mapper.AppMapper;
 import online.jtools.cimanager.controllers.mapper.UserMapper;
@@ -31,29 +29,37 @@ public class ApiController {
     private final UserDAO userDAO;
     private final PasswordDAO passwordDAO;
     private final AppDAO appDAO;
+    private final NewsDAO newsDAO;
+    private final GuideDAO guidesDAO;
     private final UserValidator userValidator;
     private final AppValidator appValidator;
     private final PasswordValidator passwordValidator;
 
     @Autowired
     public ApiController(UserDAO userDAO, PasswordDAO passwordDAO, AppDAO appDAO,
-                         UserValidator userValidator, AppValidator appValidator, PasswordValidator passwordValidator) {
+                         NewsDAO newsDAO, GuideDAO guidesDAO, UserValidator userValidator, AppValidator appValidator, PasswordValidator passwordValidator) {
         this.userDAO = userDAO;
         this.passwordDAO = passwordDAO;
         this.appDAO = appDAO;
+        this.newsDAO = newsDAO;
+        this.guidesDAO = guidesDAO;
         this.userValidator = userValidator;
         this.appValidator = appValidator;
         this.passwordValidator = passwordValidator;
     }
 
     @GetMapping("users")
-    public List<User> index(Model model) {
+    public List<User> index() {
         return userDAO.list();
     }
 
     @GetMapping("passwords")
-    public List<PasswordsList> passwords(Model model) {
-        return passwordDAO.getForUser();
+    public List<PasswordsList> passwords() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentName = authentication.getName();
+
+        return passwordDAO.getForUser(currentName);
     }
 
     @GetMapping("apps")
@@ -61,23 +67,39 @@ public class ApiController {
         return appDAO.getAll();
     }
 
+    @GetMapping("news")
+    public List<News> news() {
+        return newsDAO.getAll();
+    }
+
+    @GetMapping("news/get/{id}")
+    public News newsGet(@PathVariable("id") String id) {
+        return newsDAO.get(id);
+    }
+
+    @GetMapping("guides")
+    public List<Guide> guides() {
+        return guidesDAO.getAll();
+    }
+
+    @GetMapping("guides/get/{id}")
+    public Guide guideGet(@PathVariable("id") String id) {
+        return guidesDAO.get(id);
+    }
+
     @GetMapping("topmenu")
     public List<MenuLink> topmenu() {
 
         List<MenuLink> topMenu = new ArrayList<>();
 
-        /*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentName = authentication.getName();*/
 
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-
-        System.out.println(authorities);
-
+//        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         topMenu.add( new MenuLink("Мои пароли", "/passwords" ));
+        topMenu.add( new MenuLink("Новости", "/news" ));
+        topMenu.add( new MenuLink("Инструкции", "/guides" ));
+        topMenu.add(new MenuLink("Пользователи", "/allusers"));
 
         if (User.userHasAuthority("ROLE_ADMIN")) {
-
-            topMenu.add(new MenuLink("Пользователи", "/allusers"));
             topMenu.add(new MenuLink("Создать пользователя", "/createuser"));
             topMenu.add(new MenuLink("Приложения", "/apps"));
             topMenu.add(new MenuLink("Создать Приложение", "/createapp"));

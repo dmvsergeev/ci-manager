@@ -30,14 +30,21 @@ public class PasswordDatabase implements PasswordDAO {
         return jdbcTemplate.query("SELECT * FROM public.\"Passwords\"", new PasswordMapper());
     }
 
-    public List<PasswordsList> getForUser() {
-        return jdbcTemplate.query("SELECT " +
+    public List<PasswordsList> getForUser(String username) {
+        List<PasswordsList> users = jdbcTemplate.query("SELECT " +
                 "u.id as id_user, u.username, u.email, u.name as user_name, " +
                 "p.id as id_password, p.password," +
                 "a.name as app_name, a.url, a.id as id_app " +
                 "FROM public.\"Users\" as u " +
                 "INNER JOIN public.\"Passwords\" as p on p.id_user = u.id " +
-                "INNER JOIN public.\"Apps\" as a ON a.id = p.id_app", new PasswordsListMapper());
+                "INNER JOIN public.\"Apps\" as a ON a.id = p.id_app " +
+                "WHERE u.username = ?", new PasswordsListMapper(), username);
+
+        if (users.isEmpty()) {
+            //throw new CimanagerUserNotFoundException("Username " + username + " was not found");
+        } else {
+            return users;
+        }
     }
 
     @Override

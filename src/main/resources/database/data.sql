@@ -29,3 +29,12 @@ VALUES
 (6,1,'FGhsdfwt45'),
 (7,1,'$#%^FgFG'),
 (8,1,'BDF%$4FGfgfg');
+
+INSERT INTO "public"."News"("id","title","content","img")
+VALUES
+(E'1                                   ',E'Новость 1',E'Скоро будет поставка',NULL),
+(E'2                                   ',E'Новость еще тестовая',E'Прошли тесты движка',NULL);
+
+INSERT INTO "public"."Guides"("id","title","content")
+VALUES
+(E'1                                   ',E'Как пользоваться амо',E'ываываываываыв ыавывы');

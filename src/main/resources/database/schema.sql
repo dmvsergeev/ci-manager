@@ -33,3 +33,22 @@ CREATE TABLE "Passwords" (
 );
 
 CREATE UNIQUE INDEX "Passwords_pkey1" ON "Passwords"(id int4_ops);
+
+CREATE UNIQUE INDEX "Users_username" ON "Users"(username text_ops);
+
+CREATE TABLE "News" (
+    id char(36) PRIMARY KEY,
+    title text,
+    content text,
+    img text
+);
+
+CREATE UNIQUE INDEX "News_pkey1" ON "News"(id);
+
+CREATE TABLE "Guides" (
+    id char(36) PRIMARY KEY,
+    title text,
+    content text
+);
+
+CREATE UNIQUE INDEX "Guides_pkey1" ON "Guides"(id);

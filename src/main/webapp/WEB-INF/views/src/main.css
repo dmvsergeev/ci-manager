@@ -12,3 +12,9 @@
     min-width: 130px;
     display: inline-block;
 }
+
+.more {
+    display: inline-block;
+    padding-left: 20px;
+    text-decoration: underline;
+}

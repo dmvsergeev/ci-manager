@@ -28,10 +28,10 @@ class Apps extends Component {
                     <tr key={app_item.id_app}>
                         <td><b>{app_item.name}</b></td>
                         <td>{app_item.url}</td>
-                        <td>
+                        /*<td>
                             <div className="btn btn-primary btn-sm">Редактировать</div>
                             <div className="btn btn-danger btn-sm">Удалить</div>
-                        </td>
+                        </td>*/
                     </tr>
                 )}
                     </tbody>

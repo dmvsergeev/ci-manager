@@ -12,5 +12,5 @@ public interface PasswordDAO {
 
     void save(Password password);
 
-    List<PasswordsList> getForUser();
+    List<PasswordsList> getForUser(String username);
 }

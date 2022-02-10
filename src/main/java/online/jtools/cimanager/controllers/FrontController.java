@@ -33,6 +33,30 @@ public class FrontController {
         return "index";
     }
 
+    @GetMapping("news")
+    public String news(Model model) {
+
+        return "index";
+    }
+
+    @GetMapping("story")
+    public String story(Model model) {
+
+        return "index";
+    }
+
+    @GetMapping("guides")
+    public String guides(Model model) {
+
+        return "index";
+    }
+
+    @GetMapping("guide")
+    public String guide(Model model) {
+
+        return "index";
+    }
+
     @GetMapping("createuser")
     public String createuser(Model model) {
 
