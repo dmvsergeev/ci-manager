@@ -1,28 +1,36 @@
 package online.jtools.cimanager.models.pojo;
 
-import online.jtools.cimanager.models.api.DefaultIdentifier;
 import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.api.Model;
+import online.jtools.cimanager.security.Role;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class User extends Model {
-    @Nullable private final Identifier id;
+    @Nullable
+    private final Identifier id;
     private boolean valid_id;
-    @NotNull private final String name;
+    @NotNull
+    private final String name;
     private boolean valid_name;
-    @NotNull private final String email;
-    @NotNull private final String username;
-    @NotNull private final String password;
+    @NotNull
+    private final String email;
+    @NotNull
+    private final String username;
+    @NotNull
+    private final String password;
     private final boolean active;
-    @NotNull private final Set<Role> roles;
+    @NotNull
+    private final AtomicReference<Set<Role>> roles = new AtomicReference<>();
 
-    public User(@NotNull Identifier id, @NotNull String name, @NotNull String email, @NotNull String username, @NotNull String password, boolean active, @NotNull Set<Role> roles) {
+    public User(@Nullable Identifier id, @NotNull String name, @NotNull String email, @NotNull String username, @NotNull String password, boolean active) {
         this.id = id;
         valid_id = true;
         this.name = name;
@@ -31,27 +39,18 @@ public class User extends Model {
         this.username = username;
         this.password = password;
         this.active = active;
-        this.roles = roles;
     }
 
-    public User(@NotNull String name, @NotNull String email, @NotNull String username, @NotNull String password, boolean active, @NotNull Set<Role> roles) {
-        this.id = null;
-        valid_id = true;
-        this.name = name;
-        valid_name = true;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.active = active;
-        this.roles = roles;
+    public User(@NotNull String name, @NotNull String email, @NotNull String username, @NotNull String password, boolean active) {
+        this(null, name, email, username, password, active);
     }
 
     public User(@NotNull Identifier id, @NotNull String name, @NotNull String email, @NotNull String username) {
-        this(id, name, email, username, "", false, Collections.emptySet());
+        this(id, name, email, username, "", false);
     }
 
     public User(@NotNull String name, @NotNull String email, @NotNull String username) {
-        this(name, email, username, "", false, Collections.emptySet());
+        this(name, email, username, "", false);
     }
 
     @NotNull
@@ -87,19 +86,14 @@ public class User extends Model {
     }
 
     public @NotNull Set<Role> getRoles() {
-        return roles;
-    }
-
-    public static boolean userHasAuthority(String authority) {
-
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-
-        for (GrantedAuthority grantedAuthority : authorities) {
-            if (authority.equals(grantedAuthority.getAuthority())) {
-                return true;
+        Set<Role> roles = this.roles.get();
+        if (roles == null) {
+            roles = EnumSet.noneOf(Role.class);
+            for (GrantedAuthority authority : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+                roles.add(Role.of(authority.getAuthority()));
             }
+            this.roles.compareAndSet(null, roles);
         }
-
-        return false;
+        return roles;
     }
 }

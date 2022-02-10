@@ -1,25 +1,30 @@
 package online.jtools.cimanager.controllers;
 
 import online.jtools.cimanager.DAO.api.*;
-import online.jtools.cimanager.controllers.mapper.PasswordMapper;
 import online.jtools.cimanager.controllers.mapper.AppMapper;
+import online.jtools.cimanager.controllers.mapper.PasswordMapper;
 import online.jtools.cimanager.controllers.mapper.UserMapper;
 import online.jtools.cimanager.controllers.validator.AppValidator;
 import online.jtools.cimanager.controllers.validator.PasswordValidator;
 import online.jtools.cimanager.controllers.validator.UserValidator;
+import online.jtools.cimanager.controllers.validator.exception.NoPermissionException;
 import online.jtools.cimanager.controllers.validator.exception.ValidationException;
 import online.jtools.cimanager.models.api.Identifier;
+import online.jtools.cimanager.models.api.Model;
 import online.jtools.cimanager.models.error.ResponseError;
 import online.jtools.cimanager.models.pojo.*;
+import online.jtools.cimanager.security.Execution;
+import online.jtools.cimanager.security.Permission;
+import online.jtools.cimanager.security.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -69,7 +74,7 @@ public class ApiController {
 
     @GetMapping("news")
     public List<News> news() {
-        return newsDAO.getAll();
+        return new Execution(new User()).exec(Permission.NEWS, () -> newsDAO.getAll() );
     }
 
     @GetMapping("news/get/{id}")
@@ -89,25 +94,16 @@ public class ApiController {
 
     @GetMapping("topmenu")
     public List<MenuLink> topmenu() {
-
-        List<MenuLink> topMenu = new ArrayList<>();
-
-
-//        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        topMenu.add( new MenuLink("Мои пароли", "/passwords" ));
-        topMenu.add( new MenuLink("Новости", "/news" ));
-        topMenu.add( new MenuLink("Инструкции", "/guides" ));
-        topMenu.add(new MenuLink("Пользователи", "/allusers"));
-
-        if (User.userHasAuthority("ROLE_ADMIN")) {
-            topMenu.add(new MenuLink("Создать пользователя", "/createuser"));
-            topMenu.add(new MenuLink("Приложения", "/apps"));
-            topMenu.add(new MenuLink("Создать Приложение", "/createapp"));
-
-        }
-
-        return topMenu;
-
+        final Role role = Role.of("user"); // TODO
+        return new Menu(Collections.singletonList(role))
+                .addLink(Permission.PASSWORDS, "Мои пароли", "/passwords")
+                .addLink(Permission.NEWS, "Новости", "/news")
+                .addLink(Permission.GUIDES, "Инструкции", "/guides")
+                .addLink(Permission.ALL_USERS, "Пользователи", "/allusers")
+                .addLink(Permission.CREATE_USER, "Создать пользователя", "/createuser")
+                .addLink(Permission.APPS, "Приложения", "/apps")
+                .addLink(Permission.CREATE_APP, "Создать Приложение", "/createapp")
+                .links();
     }
 
     @GetMapping("user/{id}")
@@ -118,7 +114,7 @@ public class ApiController {
 
     @PostMapping("user/create")
     @ResponseBody
-    public Identifier createUser(@RequestBody Map<String,Object> body) {
+    public Identifier createUser(@RequestBody Map<String, Object> body) {
         User user = new UserMapper().createUserRequest(body);
         userValidator.validate(user);
         return userDAO.save(user);
@@ -126,7 +122,7 @@ public class ApiController {
 
     @PostMapping("password/set")
     @ResponseBody
-    public boolean setPassword(@RequestBody Map<String,Object> body) {
+    public boolean setPassword(@RequestBody Map<String, Object> body) {
         Password password = new PasswordMapper().createPasswordRequest(body);
         passwordValidator.validate(password);
         passwordDAO.save(password);
@@ -134,7 +130,7 @@ public class ApiController {
     }
 
     @PostMapping("app/create")
-    public String createApp(@RequestBody Map<String,Object> body) {
+    public String createApp(@RequestBody Map<String, Object> body) {
         try {
             App app = new AppMapper().createAppRequest(body);
             appValidator.validate(app);
