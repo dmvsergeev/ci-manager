@@ -22,8 +22,8 @@ public enum Role {
             PASSWORDS,
             GUIDES));
 
-    private String name;
-    private List<Permission> permissions;
+    final String name;
+    final List<Permission> permissions;
 
     Role(@NotNull String name, @NotNull List<Permission> permissions) {
         this.name = name;

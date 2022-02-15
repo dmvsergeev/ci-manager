@@ -7,13 +7,10 @@ import online.jtools.cimanager.controllers.mapper.UserMapper;
 import online.jtools.cimanager.controllers.validator.AppValidator;
 import online.jtools.cimanager.controllers.validator.PasswordValidator;
 import online.jtools.cimanager.controllers.validator.UserValidator;
-import online.jtools.cimanager.controllers.validator.exception.NoPermissionException;
 import online.jtools.cimanager.controllers.validator.exception.ValidationException;
 import online.jtools.cimanager.models.api.Identifier;
-import online.jtools.cimanager.models.api.Model;
 import online.jtools.cimanager.models.error.ResponseError;
 import online.jtools.cimanager.models.pojo.*;
-import online.jtools.cimanager.security.Execution;
 import online.jtools.cimanager.security.Permission;
 import online.jtools.cimanager.security.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,7 +129,7 @@ public class ApiController {
             appValidator.validate(app);
             return appDAO.save(app);
         } catch (ValidationException e) {
-            System.out.println(e);
+//            System.out.println(e);
             return "false";
         }
     }

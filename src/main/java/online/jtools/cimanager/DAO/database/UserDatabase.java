@@ -22,7 +22,7 @@ public class UserDatabase implements UserDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private List<User> users;
+//    private List<User> users;
 
     @Override
     public List<User> list() {

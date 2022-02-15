@@ -20,7 +20,7 @@ public class AppDatabase implements AppDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private List<App> users;
+//    private List<App> users;
 
     public List<App> index() { return jdbcTemplate.query("SELECT * FROM public.\"Apps\"", new AppMapper()); }
 

@@ -3,7 +3,6 @@ package online.jtools.cimanager.DAO.database;
 import online.jtools.cimanager.DAO.api.NewsDAO;
 import online.jtools.cimanager.DAO.database.mapper.NewsMapper;
 import online.jtools.cimanager.controllers.validator.exception.DbSaveException;
-import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.pojo.News;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,7 +20,7 @@ public class NewsDatabase implements NewsDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private List<News> news;
+//    private List<News> news;
 
     public List<News> index() { return jdbcTemplate.query("SELECT * FROM public.\"News\"", new NewsMapper()); }
 

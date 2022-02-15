@@ -24,6 +24,7 @@ public class News {
         this.content = content;
     }
 
+    @Nullable
     public Identifier getId() {
         return id;
     }

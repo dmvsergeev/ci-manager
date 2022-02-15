@@ -16,10 +16,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class User extends Model {
     @Nullable
     private final Identifier id;
-    private boolean valid_id;
+    final boolean valid_id;
     @NotNull
     private final String name;
-    private boolean valid_name;
+    final boolean valid_name;
     @NotNull
     private final String email;
     @NotNull

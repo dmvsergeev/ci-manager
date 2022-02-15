@@ -1,7 +1,6 @@
 package online.jtools.cimanager.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -10,62 +9,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FrontController {
 
     @GetMapping()
-    public String index(Model model) {
-
+    public String index() {
         return "index";
     }
 
     @GetMapping("allusers")
-    public String allusers(Model model) {
-
+    public String allusers() {
         return "index";
     }
 
     @GetMapping("passwords")
-    public String passwords(Model model) {
-
+    public String passwords() {
         return "index";
     }
 
     @GetMapping("apps")
-    public String apps(Model model) {
-
+    public String apps() {
         return "index";
     }
 
     @GetMapping("news")
-    public String news(Model model) {
-
+    public String news() {
         return "index";
     }
 
     @GetMapping("story")
-    public String story(Model model) {
-
+    public String story() {
         return "index";
     }
 
     @GetMapping("guides")
-    public String guides(Model model) {
-
+    public String guides() {
         return "index";
     }
 
     @GetMapping("guide")
-    public String guide(Model model) {
-
+    public String guide() {
         return "index";
     }
 
     @GetMapping("createuser")
-    public String createuser(Model model) {
-
+    public String createuser() {
         return "index";
     }
 
     @GetMapping("setpassword")
-    public String setpassword(Model model) {
-
+    public String setpassword() {
         return "index";
     }
 

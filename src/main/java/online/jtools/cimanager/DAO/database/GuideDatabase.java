@@ -4,9 +4,7 @@ import online.jtools.cimanager.DAO.api.GuideDAO;
 import online.jtools.cimanager.DAO.database.exception.CimanagerGuideDBDataCorruption;
 import online.jtools.cimanager.DAO.database.exception.CimanagerGuideNotFoundException;
 import online.jtools.cimanager.DAO.database.mapper.GuideMapper;
-import online.jtools.cimanager.DAO.database.mapper.NewsMapper;
 import online.jtools.cimanager.controllers.validator.exception.DbSaveException;
-import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.pojo.Guide;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,7 +22,7 @@ public class GuideDatabase implements GuideDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private List<Guide> guides;
+//    private List<Guide> guides;
 
     public List<Guide> index() { return jdbcTemplate.query("SELECT * FROM public.\"Guides\"", new GuideMapper()); }
 

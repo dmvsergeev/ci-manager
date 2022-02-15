@@ -22,9 +22,7 @@ public class PasswordDatabase implements PasswordDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private static int USERS_COUNT;
-
-    private List<Password> passwords;
+//    private List<Password> passwords;
 
     public List<Password> index() {
         return jdbcTemplate.query("SELECT * FROM public.\"Passwords\"", new PasswordMapper());
