@@ -45,8 +45,7 @@ public class AppDatabase implements AppDAO {
         final int result = jdbcTemplate.update("INSERT INTO public.\"Apps\" (\"name\",\"url\") " +
                 "VALUES(?,?)", app.getName(), app.getUrl());
         if (result != 0) {
-            //roleDAO.save(id, user.getRoles());
-            return "";
+            return "true";
         } else {
             throw new DbSaveException("DB save error");
         }

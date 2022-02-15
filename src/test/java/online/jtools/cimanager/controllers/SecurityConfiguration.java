@@ -13,8 +13,8 @@ public class SecurityConfiguration
 
     @Override
     public void init(WebSecurity builder) throws Exception {
-        builder.ignoring().requestMatchers(
-                new AntPathRequestMatcher("/**"));
+//        builder.ignoring().requestMatchers(
+//                new AntPathRequestMatcher("/**"));
     }
 
     @Override

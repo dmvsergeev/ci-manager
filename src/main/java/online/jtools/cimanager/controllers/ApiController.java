@@ -74,7 +74,9 @@ public class ApiController {
 
     @GetMapping("news")
     public List<News> news() {
-        return new Execution(new User()).exec(Permission.NEWS, () -> newsDAO.getAll() );
+
+        //return new Execution(new User()).exec(Permission.NEWS, () -> newsDAO.getAll() );
+        return newsDAO.getAll();
     }
 
     @GetMapping("news/get/{id}")
@@ -104,12 +106,6 @@ public class ApiController {
                 .addLink(Permission.APPS, "Приложения", "/apps")
                 .addLink(Permission.CREATE_APP, "Создать Приложение", "/createapp")
                 .links();
-    }
-
-    @GetMapping("user/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userDAO.get(id));
-        return "users/detail";
     }
 
     @PostMapping("user/create")

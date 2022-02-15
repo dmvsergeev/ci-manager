@@ -10,7 +10,7 @@ public interface PasswordDAO {
 
     Password get(int id);
 
-    void save(Password password);
+    String save(Password password);
 
     List<PasswordsList> getForUser(String username);
 }

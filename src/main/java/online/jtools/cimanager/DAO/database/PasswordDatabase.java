@@ -41,6 +41,7 @@ public class PasswordDatabase implements PasswordDAO {
                 "WHERE u.username = ?", new PasswordsListMapper(), username);
 
         if (users.isEmpty()) {
+            return java.util.Collections.emptyList();
             //throw new CimanagerUserNotFoundException("Username " + username + " was not found");
         } else {
             return users;
@@ -57,15 +58,23 @@ public class PasswordDatabase implements PasswordDAO {
         return null;
     }
 
-    public void save(Password password) {
+    public String save(Password password) {
+
+        final int result;
+
         if (password.isNew()) {
-            final int result = jdbcTemplate.update("INSERT INTO public.\"Passwords\" (\"id_app\",\"id_user\",\"password\") " +
+            result = jdbcTemplate.update("INSERT INTO public.\"Passwords\" (\"id_app\",\"id_user\",\"password\") " +
                     "VALUES(?,?,?)", password.getId_app(), password.getId_user(), password.getPassword());
-            if (result != 0) {
-                //roleDAO.save(id, user.getRoles());
-            } else {
-                throw new DbSaveException("DB save error");
-            }
+        } else {
+            result = jdbcTemplate.update("UPDATE public.\"Passwords\" SET \"id_app\" = ?, \"id_user\" = ?,\"password\" = ?"
+                    + " WHERE \"id\" = ?", password.getId_app(), password.getId_user(), password.getPassword(), password.getId());
+
+        }
+
+        if (result != 0) {
+            return "true";
+        } else {
+            throw new DbSaveException("DB save error");
         }
     }
 }
