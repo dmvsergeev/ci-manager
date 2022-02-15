@@ -33,6 +33,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonNode;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 
@@ -208,19 +209,6 @@ public class ApiControllerTest extends TestCase {
         }
     }
 
-
-    static class Initializer
-            implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues.of(
-                    "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
-                    "spring.datasource.username=" + postgreSQLContainer.getUsername(),
-                    "spring.datasource.password=" + postgreSQLContainer.getPassword()
-            ).applyTo(configurableApplicationContext.getEnvironment());
-        }
-
-    }
-
     @Test
     public void checkAdminMenu() throws URISyntaxException {
         final String baseUrl = "http://localhost:" + randomServerPort + "/api/topmenu";
@@ -240,5 +228,51 @@ public class ApiControllerTest extends TestCase {
             Assert.assertEquals("[{\"id\":0,\"name\":\"Мои пароли\",\"link\":\"/passwords\"},{\"id\":0,\"name\":\"Новости\",\"link\":\"/news\"},{\"id\":0,\"name\":\"Инструкции\",\"link\":\"/guides\"}]",result.getBody());
         }
     }
+
+    @Test
+    public void checkAdminRoleUrlAccess() throws URISyntaxException {
+        final String baseUrl = "http://localhost:" + randomServerPort;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");
+        headers.add("Cookie", setCookie);
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        HashSet<String> listUrls = new HashSet<>();
+
+        listUrls.add("/allusers");
+        listUrls.add("/passwords");
+        listUrls.add("/news");
+        listUrls.add("/guides");
+        listUrls.add("/apps");
+
+        for (String url : listUrls) {
+
+            URI uri = new URI(baseUrl + url);
+
+            ResponseEntity<String> result = restTemplate.exchange(
+                    uri, HttpMethod.GET, requestEntity, String.class);
+
+            //Verify request succeed
+            Assert.assertEquals(200, result.getStatusCodeValue());
+
+        }
+
+    }
+
+    static class Initializer
+            implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            TestPropertyValues.of(
+                    "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
+                    "spring.datasource.username=" + postgreSQLContainer.getUsername(),
+                    "spring.datasource.password=" + postgreSQLContainer.getPassword()
+            ).applyTo(configurableApplicationContext.getEnvironment());
+        }
+
+    }
+
+
 
 }
