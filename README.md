@@ -8,7 +8,7 @@ mvn clean test
 ```
 ### First start
 #### create config/application.properties
-``` 
+```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/cimanager
 spring.datasource.username=dbuser
 spring.datasource.password=dbpassword12345
