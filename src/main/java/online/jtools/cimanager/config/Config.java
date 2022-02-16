@@ -54,10 +54,10 @@ public class Config implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(@NotNull ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("classpath:/WEB-INF/css/**")
-                .addResourceLocations("/css/");
-        registry.addResourceHandler("classpath:/WEB-INF/js/**")
-                .addResourceLocations("/js/");
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("classpath:/WEB-INF/css/");
+        registry.addResourceHandler("/js/**")
+                .addResourceLocations("classpath:/WEB-INF/js/");
     }
 
     public void addViewControllers(@NotNull ViewControllerRegistry registry) {
