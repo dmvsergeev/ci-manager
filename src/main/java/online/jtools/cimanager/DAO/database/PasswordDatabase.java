@@ -1,11 +1,10 @@
 package online.jtools.cimanager.DAO.database;
 
-import online.jtools.cimanager.DAO.database.mapper.PasswordMapper;
-import online.jtools.cimanager.DAO.database.mapper.PasswordsListMapper;
 import online.jtools.cimanager.DAO.api.PasswordDAO;
+import online.jtools.cimanager.DAO.database.mapper.PasswordDatabaseMapper;
 import online.jtools.cimanager.controllers.validator.exception.DbSaveException;
 import online.jtools.cimanager.models.pojo.Password;
-import online.jtools.cimanager.models.pojo.PasswordsList;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -15,62 +14,44 @@ import java.util.List;
 @Component
 public class PasswordDatabase implements PasswordDAO {
 
+    @NotNull
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public PasswordDatabase(JdbcTemplate jdbcTemplate) {
+    public PasswordDatabase(@NotNull JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-//    private List<Password> passwords;
-
-    public List<Password> index() {
-        return jdbcTemplate.query("SELECT * FROM public.\"Passwords\"", new PasswordMapper());
-    }
-
-    public List<PasswordsList> getForUser(String username) {
-        List<PasswordsList> users = jdbcTemplate.query("SELECT " +
-                "u.id as id_user, u.username, u.email, u.name as user_name, " +
-                "p.id as id_password, p.password," +
-                "a.name as app_name, a.url, a.id as id_app " +
+    @NotNull
+    @Override
+    public List<Password> getForUser(@NotNull String username) {
+        return jdbcTemplate.query("SELECT " +
+                "u.id as id_user, " +
+                "u.username, " +
+                "u.email as user_email, " +
+                "u.name as user_name, " +
+                "a.id as id_app, " +
+                "a.name as app_name, " +
+                "a.url as app_url, " +
+                "p.password" +
                 "FROM public.\"Users\" as u " +
-                "INNER JOIN public.\"Passwords\" as p on p.id_user = u.id " +
-                "INNER JOIN public.\"Apps\" as a ON a.id = p.id_app " +
-                "WHERE u.username = ?", new PasswordsListMapper(), username);
-
-        if (users.isEmpty()) {
-            return java.util.Collections.emptyList();
-            //throw new CimanagerUserNotFoundException("Username " + username + " was not found");
-        } else {
-            return users;
-        }
+                "INNER JOIN public.\"Passwords\" AS p ON p.id_user = u.id " +
+                "INNER JOIN public.\"Apps\" AS a ON a.id = p.id_app " +
+                "WHERE u.username = ?", new PasswordDatabaseMapper(), username);
     }
 
-    @Override
-    public List<Password> passwords() {
-        return null;
-    }
-
-    @Override
-    public Password get(int id) {
-        return null;
-    }
-
-    public String save(Password password) {
-
+    @NotNull
+    public Password save(@NotNull Password password) {
         final int result;
-
-        if (password.isNew()) {
-            result = jdbcTemplate.update("INSERT INTO public.\"Passwords\" (\"id_app\",\"id_user\",\"password\") " +
-                    "VALUES(?,?,?)", password.getId_app(), password.getId_user(), password.getPassword());
-        } else {
-            result = jdbcTemplate.update("UPDATE public.\"Passwords\" SET \"id_app\" = ?, \"id_user\" = ?,\"password\" = ?"
-                    + " WHERE \"id\" = ?", password.getId_app(), password.getId_user(), password.getPassword(), password.getId());
-
-        }
-
+        result = jdbcTemplate.update(
+                "INSERT INTO public.\"Passwords\" (\"id_app\",\"id_user\",\"password\") " +
+                        "VALUES(?,?,?) " +
+                        "ON CONFLICT (\"id_app\",\"id_user\") " +
+                        "DO " +
+                        "UPDATE SET \"password\" = ?",
+                password.getApp().getId().toString(), password.getUser().getId().toString(), password.getPassword(), password.getPassword());
         if (result != 0) {
-            return "true";
+            return new Password(password.getApp(), password.getUser(), password.getPassword());
         } else {
             throw new DbSaveException("DB save error");
         }

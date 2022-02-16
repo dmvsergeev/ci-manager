@@ -2,17 +2,18 @@ package online.jtools.cimanager.DAO.api;
 
 import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.pojo.News;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public interface NewsDAO {
 
-    List<News> news();
+    @NotNull List<News> news();
 
-    News get(String id);
+    @NotNull News get(@NotNull Identifier id);
 
-    String save(News guide);
+    @NotNull News save(@NotNull News guide);
 
-    List<News> getAll();
+    @NotNull List<News> getAll();
 
 }

@@ -1,55 +1,36 @@
 package online.jtools.cimanager.models.pojo;
 
 import online.jtools.cimanager.models.api.Identifier;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class News {
 
-    @Nullable
+    @NotNull
     private final Identifier id;
-    private String title;
-    private String content;
-    private String img;
+    @NotNull
+    private final String title;
+    @NotNull
+    private final String content;
 
-    public News(@Nullable Identifier id, String title, String content, String img) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.img = img;
-    }
-
-    public News(@Nullable Identifier id, String title, String content) {
+    public News(@NotNull Identifier id, @NotNull String title, @NotNull String content) {
         this.id = id;
         this.title = title;
         this.content = content;
     }
 
-    @Nullable
+    @NotNull
     public Identifier getId() {
         return id;
     }
 
+    @NotNull
     public String getTitle() {
         return title;
     }
 
+    @NotNull
     public String getContent() {
         return content;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
     }
 }

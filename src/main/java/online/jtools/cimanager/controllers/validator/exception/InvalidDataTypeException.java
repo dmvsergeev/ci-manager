@@ -1,8 +1,7 @@
 package online.jtools.cimanager.controllers.validator.exception;
 
-public class InvalidDataTypeException extends ValidationException {
-
+public class InvalidDataTypeException extends CimanagerException {
     public InvalidDataTypeException(String message) {
-        super("Invalid data type", message);
+        super("Data type", message);
     }
 }

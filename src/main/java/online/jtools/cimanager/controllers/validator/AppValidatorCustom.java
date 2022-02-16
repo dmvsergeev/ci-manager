@@ -1,20 +1,26 @@
 package online.jtools.cimanager.controllers.validator;
 
 import online.jtools.cimanager.controllers.validator.exception.EmptyEmailException;
-import online.jtools.cimanager.controllers.validator.exception.ValidationException;
+import online.jtools.cimanager.controllers.validator.exception.CimanagerException;
 import online.jtools.cimanager.models.pojo.App;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AppValidatorCustom implements AppValidator {
     @Override
-    public void validate(App app) throws ValidationException {
-        if (app.getName() == null || app.getName().isEmpty()) {
+    public void validate(@NotNull App app) throws CimanagerException {
+        if (isEmpty(app.getName())) {
             throw new EmptyEmailException(app.getName() + " has empty name");
         }
 
-        if (app.getUrl() == null || app.getUrl().isEmpty()) {
+        if (isEmpty(app.getUrl())) {
             throw new EmptyEmailException(app.getName() + " has empty url");
         }
+    }
+
+    private boolean isEmpty(@Nullable String value) {
+        return value == null || value.isEmpty();
     }
 }

@@ -1,49 +1,51 @@
 package online.jtools.cimanager.models.pojo;
 
+import online.jtools.cimanager.models.api.Identifier;
+import org.jetbrains.annotations.NotNull;
+
 public class App {
 
-    private int id;
-    private String name;
-    private String url;
+    @NotNull
+    private final Identifier id;
+    @NotNull
+    private final String name;
+    @NotNull
+    private final String url;
 
-    public App() {
-
-    }
-
-    public App(String name, String url) {
-        this.name = name;
-        this.url = url;
-
-    }
-
-    public App(int id, String name, String url) {
+    public App(@NotNull Identifier id, @NotNull String name, @NotNull String url) {
         this.id = id;
         this.name = name;
         this.url = url;
-
     }
 
-    public String getUrl() {
-        return url;
+    @NotNull
+    public Identifier getId() {
+        return id;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
+    @NotNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @NotNull
+    public String getUrl() {
+        return url;
     }
 
-    public int getId() {
-        return id;
-    }
+    public static App id(@NotNull Identifier id) {
+        return new App(id, "", "") {
+            @NotNull
+            @Override
+            public String getName() {
+                throw new UnsupportedOperationException();
+            }
 
-    public void setId(int id) {
-        this.id = id;
+            @NotNull
+            @Override
+            public String getUrl() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 }

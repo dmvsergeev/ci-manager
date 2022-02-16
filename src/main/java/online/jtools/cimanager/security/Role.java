@@ -9,6 +9,9 @@ import java.util.List;
 
 import static online.jtools.cimanager.security.Permission.*;
 
+/**
+ * Application roles
+ */
 public enum Role {
     ADMIN("admin", Arrays.asList(NEWS,
             PASSWORDS,
@@ -22,9 +25,13 @@ public enum Role {
             PASSWORDS,
             GUIDES));
 
-    final String name;
-    final List<Permission> permissions;
+    final private String name;
+    final private List<Permission> permissions;
 
+    /**
+     * @param name role name
+     * @param permissions action accessions
+     */
     Role(@NotNull String name, @NotNull List<Permission> permissions) {
         this.name = name;
         this.permissions = permissions;

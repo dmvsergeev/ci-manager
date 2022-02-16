@@ -2,17 +2,18 @@ package online.jtools.cimanager.DAO.api;
 
 import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.pojo.Guide;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public interface GuideDAO {
 
-    List<Guide> guides();
+    @NotNull List<Guide> guides();
 
-    Guide get(String id);
+    @NotNull Guide get(@NotNull Identifier id);
 
-    String save(Guide guide);
+    @NotNull Guide save(@NotNull Guide guide);
 
-    List<Guide> getAll();
+    @NotNull List<Guide> getAll();
 
 }

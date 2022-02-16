@@ -2,13 +2,14 @@ package online.jtools.cimanager.DAO.api;
 
 import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.pojo.User;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public interface UserDAO {
-    List<User> list();
+    @NotNull List<User> list();
 
-    User get(int id);
+    @NotNull User get(Identifier id);
 
-    Identifier save(User user);
+    @NotNull User save(@NotNull User user);
 }

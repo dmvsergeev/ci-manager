@@ -1,15 +1,13 @@
 package online.jtools.cimanager.controllers;
 
+import com.google.gson.Gson;
 import junit.framework.TestCase;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -17,29 +15,23 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.*;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonNode;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes=SecurityConfiguration.class
-        ,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = SecurityConfiguration.class
+        , webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(initializers = {ApiControllerTest.Initializer.class})
 @TestPropertySource(locations = "classpath:properties.properties")
 public class ApiControllerTest extends TestCase {
@@ -52,7 +44,7 @@ public class ApiControllerTest extends TestCase {
     String setCookie;
 
     @ClassRule
-    public static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres:11.1")
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer("postgres:11.1")
             .withDatabaseName("integration-tests-db")
             .withUsername("sa")
             .withPassword("sa");
@@ -100,10 +92,13 @@ public class ApiControllerTest extends TestCase {
         //Verify request succeed
         Assert.assertEquals(200, result.getStatusCodeValue());
         {
-            // Body example: {"id":"6ef7b984-c118-4f03-b8a3-2f6624f65e45"}
-            Assert.assertTrue(result.getBody().startsWith("{\"id\":\""));
-            Assert.assertTrue(result.getBody().endsWith("\"}"));
-            Assert.assertEquals(45, result.getBody().length());
+            final Map<String, String> obj = new Gson().fromJson(result.getBody(), Map.class);
+
+            Assert.assertNotNull(obj.get("id"));
+            Assert.assertEquals("Vacia", obj.get("name"));
+            Assert.assertEquals("Vacia@mail.ru", obj.get("email"));
+            Assert.assertEquals("Vacia", obj.get("username"));
+            Assert.assertNull(obj.get("password"));
         }
     }
 
@@ -225,7 +220,17 @@ public class ApiControllerTest extends TestCase {
         //Verify request succeed
         Assert.assertEquals(200, result.getStatusCodeValue());
         {
-            Assert.assertEquals("[{\"id\":0,\"name\":\"Мои пароли\",\"link\":\"/passwords\"},{\"id\":0,\"name\":\"Новости\",\"link\":\"/news\"},{\"id\":0,\"name\":\"Инструкции\",\"link\":\"/guides\"}]",result.getBody());
+            final List<Map<String, String>> obj = new Gson().fromJson(result.getBody(), List.class);
+            Assert.assertEquals(3, obj.size());
+
+            Assert.assertEquals("/passwords", obj.get(0).get("link"));
+            Assert.assertEquals("Мои пароли", obj.get(0).get("name"));
+
+            Assert.assertEquals("/news", obj.get(1).get("link"));
+            Assert.assertEquals("Новости", obj.get(1).get("name"));
+
+            Assert.assertEquals("/guides", obj.get(2).get("link"));
+            Assert.assertEquals("Инструкции", obj.get(2).get("name"));
         }
     }
 
@@ -272,7 +277,6 @@ public class ApiControllerTest extends TestCase {
         }
 
     }
-
 
 
 }

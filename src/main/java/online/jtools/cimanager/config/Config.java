@@ -1,5 +1,6 @@
 package online.jtools.cimanager.config;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -17,14 +18,16 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @EnableWebMvc
 public class Config implements WebMvcConfigurer {
 
+    @NotNull
     private final ApplicationContext applicationContext;
 
     @Autowired
-    public Config(ApplicationContext applicationContext) {
+    public Config(@NotNull ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
     @Bean
+    @NotNull
     public ITemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
@@ -34,6 +37,7 @@ public class Config implements WebMvcConfigurer {
     }
 
     @Bean
+    @NotNull
     public ISpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
@@ -42,14 +46,14 @@ public class Config implements WebMvcConfigurer {
     }
 
     @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
+    public void configureViewResolvers(@NotNull ViewResolverRegistry registry) {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
     }
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(@NotNull ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**", "/css/**")
                 .addResourceLocations("/WEB-INF/resources/", "/WEB-INF/css/");
 
@@ -63,7 +67,7 @@ public class Config implements WebMvcConfigurer {
                 .addResourceLocations("/resources/", "/WEB-INF/views/distr/");
     }
 
-    public void addViewControllers(ViewControllerRegistry registry) {
+    public void addViewControllers(@NotNull ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
     }
 

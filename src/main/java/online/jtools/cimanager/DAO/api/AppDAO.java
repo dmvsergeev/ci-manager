@@ -1,15 +1,17 @@
 package online.jtools.cimanager.DAO.api;
 
+import online.jtools.cimanager.models.api.Identifier;
 import online.jtools.cimanager.models.pojo.App;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public interface AppDAO {
-    List<App> apps();
+    @NotNull List<App> apps();
 
-    App get(int id);
+    @NotNull App get(@NotNull Identifier id);
 
-    String save(App app);
+    @NotNull App save(@NotNull App app);
 
-    List<App> getAll();
+    @NotNull List<App> getAll();
 }

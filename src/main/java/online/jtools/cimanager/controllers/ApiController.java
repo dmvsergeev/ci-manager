@@ -1,18 +1,19 @@
 package online.jtools.cimanager.controllers;
 
 import online.jtools.cimanager.DAO.api.*;
-import online.jtools.cimanager.controllers.mapper.AppMapper;
-import online.jtools.cimanager.controllers.mapper.PasswordMapper;
-import online.jtools.cimanager.controllers.mapper.UserMapper;
+import online.jtools.cimanager.controllers.mapper.AppRestMapper;
+import online.jtools.cimanager.controllers.mapper.PasswordRestMapper;
+import online.jtools.cimanager.controllers.mapper.UserRestMapper;
 import online.jtools.cimanager.controllers.validator.AppValidator;
 import online.jtools.cimanager.controllers.validator.PasswordValidator;
 import online.jtools.cimanager.controllers.validator.UserValidator;
-import online.jtools.cimanager.controllers.validator.exception.ValidationException;
-import online.jtools.cimanager.models.api.Identifier;
+import online.jtools.cimanager.controllers.validator.exception.CimanagerException;
+import online.jtools.cimanager.models.api.DefaultIdentifier;
 import online.jtools.cimanager.models.error.ResponseError;
 import online.jtools.cimanager.models.pojo.*;
 import online.jtools.cimanager.security.Permission;
 import online.jtools.cimanager.security.Role;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,18 +29,28 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:8080/api")
 public class ApiController {
 
+    @NotNull
     private final UserDAO userDAO;
+    @NotNull
     private final PasswordDAO passwordDAO;
+    @NotNull
     private final AppDAO appDAO;
+    @NotNull
     private final NewsDAO newsDAO;
+    @NotNull
     private final GuideDAO guidesDAO;
+    @NotNull
     private final UserValidator userValidator;
+    @NotNull
     private final AppValidator appValidator;
+    @NotNull
     private final PasswordValidator passwordValidator;
 
     @Autowired
-    public ApiController(UserDAO userDAO, PasswordDAO passwordDAO, AppDAO appDAO,
-                         NewsDAO newsDAO, GuideDAO guidesDAO, UserValidator userValidator, AppValidator appValidator, PasswordValidator passwordValidator) {
+    public ApiController(@NotNull UserDAO userDAO, @NotNull PasswordDAO passwordDAO, @NotNull AppDAO appDAO,
+                         @NotNull NewsDAO newsDAO, @NotNull GuideDAO guidesDAO,
+                         @NotNull UserValidator userValidator, @NotNull AppValidator appValidator,
+                         @NotNull PasswordValidator passwordValidator) {
         this.userDAO = userDAO;
         this.passwordDAO = passwordDAO;
         this.appDAO = appDAO;
@@ -51,49 +62,55 @@ public class ApiController {
     }
 
     @GetMapping("users")
-    public List<User> index() {
-        return userDAO.list();
+    @NotNull
+    public List<Map<String, String>> index() {
+        return new UserRestMapper().createUserResponse(userDAO.list());
     }
 
     @GetMapping("passwords")
-    public List<PasswordsList> passwords() {
-
+    @NotNull
+    public List<Map<String, Object>> passwords() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentName = authentication.getName();
 
-        return passwordDAO.getForUser(currentName);
+        return new PasswordRestMapper().createPasswordResponse(passwordDAO.getForUser(currentName));
     }
 
     @GetMapping("apps")
-    public List<App> apps() {
-        return appDAO.getAll();
+    @NotNull
+    public List<Map<String, String>> apps() {
+        return new AppRestMapper().createAppResponse(appDAO.getAll());
     }
 
     @GetMapping("news")
+    @NotNull
     public List<News> news() {
-
         //return new Execution(new User()).exec(Permission.NEWS, () -> newsDAO.getAll() );
         return newsDAO.getAll();
     }
 
     @GetMapping("news/get/{id}")
+    @NotNull
     public News newsGet(@PathVariable("id") String id) {
-        return newsDAO.get(id);
+        return newsDAO.get(new DefaultIdentifier(id));
     }
 
     @GetMapping("guides")
+    @NotNull
     public List<Guide> guides() {
         return guidesDAO.getAll();
     }
 
     @GetMapping("guides/get/{id}")
+    @NotNull
     public Guide guideGet(@PathVariable("id") String id) {
-        return guidesDAO.get(id);
+        return guidesDAO.get(new DefaultIdentifier(id));
     }
 
     @GetMapping("topmenu")
+    @NotNull
     public List<MenuLink> topmenu() {
-        final Role role = Role.of("user"); // TODO
+        final Role role = Role.of("user"); // FIXME
         return new Menu(Collections.singletonList(role))
                 .addLink(Permission.PASSWORDS, "Мои пароли", "/passwords")
                 .addLink(Permission.NEWS, "Новости", "/news")
@@ -107,39 +124,38 @@ public class ApiController {
 
     @PostMapping("user/create")
     @ResponseBody
-    public Identifier createUser(@RequestBody Map<String, Object> body) {
-        User user = new UserMapper().createUserRequest(body);
+    @NotNull
+    public Map<String, String> createUser(@RequestBody @NotNull Map<String, Object> body) {
+        final UserRestMapper mapper = new UserRestMapper();
+        User user = mapper.createUserRequest(body);
         userValidator.validate(user);
-        return userDAO.save(user);
+        return mapper.createUserResponse(userDAO.save(user));
     }
 
     @PostMapping("password/set")
     @ResponseBody
-    public boolean setPassword(@RequestBody Map<String, Object> body) {
-        Password password = new PasswordMapper().createPasswordRequest(body);
+    public boolean setPassword(@RequestBody @NotNull Map<String, Object> body) {
+        Password password = new PasswordRestMapper().createPasswordRequest(body);
         passwordValidator.validate(password);
         passwordDAO.save(password);
         return true;
     }
 
     @PostMapping("app/create")
-    public String createApp(@RequestBody Map<String, Object> body) {
-        try {
-            App app = new AppMapper().createAppRequest(body);
-            appValidator.validate(app);
-            return appDAO.save(app);
-        } catch (ValidationException e) {
-//            System.out.println(e);
-            return "false";
-        }
+    @ResponseBody
+    @NotNull
+    public Map<String, String> createApp(@RequestBody @NotNull Map<String, Object> body) {
+        final AppRestMapper mapper = new AppRestMapper();
+        App app = mapper.createAppRequest(body);
+        appValidator.validate(app);
+        return mapper.createAppResponse(appDAO.save(app));
     }
 
-    @ExceptionHandler(ValidationException.class)
+    @ExceptionHandler(CimanagerException.class)
     @ResponseBody
-    public ResponseError handleException(ValidationException ex, HttpServletResponse response) {
+    @NotNull
+    public ResponseError handleException(@NotNull CimanagerException ex, @NotNull  HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return new ResponseError(ex.getCode(), ex.getMessage());
     }
-
-
 }

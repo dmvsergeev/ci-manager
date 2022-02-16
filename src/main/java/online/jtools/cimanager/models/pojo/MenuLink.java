@@ -1,45 +1,25 @@
 package online.jtools.cimanager.models.pojo;
 
+import org.jetbrains.annotations.NotNull;
+
 public class MenuLink {
+    @NotNull
+    private final String name;
+    @NotNull
+    private final String link;
 
-    private int id;
-    private String name;
-
-    public MenuLink(String name, String link) {
+    public MenuLink(@NotNull String name, @NotNull String link) {
         this.name = name;
         this.link = link;
     }
 
-    private String link;
-
-
-    public MenuLink(int id, String name, String link) {
-        this.id = id;
-        this.name = name;
-        this.link = link;
-    }
-
-    public int getId() {
-        return id;
-    }
-
+    @NotNull
     public String getName() {
         return name;
     }
 
+    @NotNull
     public String getLink() {
         return link;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
     }
 }

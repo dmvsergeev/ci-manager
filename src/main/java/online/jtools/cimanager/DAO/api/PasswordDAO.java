@@ -1,16 +1,12 @@
 package online.jtools.cimanager.DAO.api;
 
 import online.jtools.cimanager.models.pojo.Password;
-import online.jtools.cimanager.models.pojo.PasswordsList;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public interface PasswordDAO {
-    List<Password> passwords();
+    @NotNull Password save(@NotNull Password password);
 
-    Password get(int id);
-
-    String save(Password password);
-
-    List<PasswordsList> getForUser(String username);
+    @NotNull List<Password> getForUser(@NotNull String username);
 }

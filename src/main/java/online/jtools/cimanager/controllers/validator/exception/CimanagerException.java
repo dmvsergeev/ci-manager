@@ -1,9 +1,9 @@
 package online.jtools.cimanager.controllers.validator.exception;
 
-public abstract class ValidationException extends RuntimeException {
+public abstract class CimanagerException extends RuntimeException {
     private final String code;
 
-    public ValidationException(String code, String message) {
+    public CimanagerException(String code, String message) {
         super(message);
         this.code = code;
     }
