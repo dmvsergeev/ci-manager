@@ -96,7 +96,6 @@ public class ApiControllerTest extends TestCase {
 
             Assert.assertNotNull(obj.get("id"));
             Assert.assertEquals("Vacia", obj.get("name"));
-            Assert.assertEquals("Vacia@mail.ru", obj.get("email"));
             Assert.assertEquals("Vacia", obj.get("username"));
             Assert.assertNull(obj.get("password"));
         }
@@ -137,11 +136,14 @@ public class ApiControllerTest extends TestCase {
 
         ResponseEntity<String> result = this.restTemplate.postForEntity(uri, request, String.class);
 
-        //Verify request succeed
-        Assert.assertEquals(200, result.getStatusCodeValue());
-        {
-            Assert.assertFalse(Boolean.parseBoolean(result.getBody()));
-        }
+        //Verify request false
+        Assert.assertEquals(400, result.getStatusCodeValue());
+
+        final Map<String, String> obj = new Gson().fromJson(result.getBody(), Map.class);
+
+        Assert.assertEquals("Empty field", obj.get("code"));
+        Assert.assertEquals("has empty password", obj.get("message"));
+
     }
 
     @Test
@@ -161,7 +163,12 @@ public class ApiControllerTest extends TestCase {
 
         //Verify request succeed
         Assert.assertEquals(400, result.getStatusCodeValue());
-        Assert.assertEquals("{\"code\":\"Empty email\",\"message\":\"Vacia has empty email\"}", result.getBody());
+
+        final Map<String, String> obj = new Gson().fromJson(result.getBody(), Map.class);
+
+        Assert.assertEquals("Empty field", obj.get("code"));
+        Assert.assertEquals("Vacia has empty email", obj.get("message"));
+
     }
 
     @Test
@@ -180,7 +187,12 @@ public class ApiControllerTest extends TestCase {
         //Verify request succeed
         Assert.assertEquals(200, result.getStatusCodeValue());
         {
-            Assert.assertTrue(Boolean.parseBoolean(result.getBody()));
+
+            final Map<String, String> obj = new Gson().fromJson(result.getBody(), Map.class);
+
+            Assert.assertEquals("Google", obj.get("name"));
+            Assert.assertEquals("https://google.com", obj.get("url"));
+
         }
     }
 
@@ -198,10 +210,13 @@ public class ApiControllerTest extends TestCase {
         ResponseEntity<String> result = this.restTemplate.postForEntity(uri, request, String.class);
 
         //Verify request succeed
-        Assert.assertEquals(200, result.getStatusCodeValue());
-        {
-            Assert.assertFalse(Boolean.parseBoolean(result.getBody()));
-        }
+        Assert.assertEquals(400, result.getStatusCodeValue());
+
+        final Map<String, String> obj = new Gson().fromJson(result.getBody(), Map.class);
+
+        Assert.assertEquals("Empty field", obj.get("code"));
+        Assert.assertEquals(" has empty name", obj.get("message"));
+
     }
 
     @Test
@@ -221,7 +236,7 @@ public class ApiControllerTest extends TestCase {
         Assert.assertEquals(200, result.getStatusCodeValue());
         {
             final List<Map<String, String>> obj = new Gson().fromJson(result.getBody(), List.class);
-            Assert.assertEquals(3, obj.size());
+            Assert.assertEquals(7, obj.size());
 
             Assert.assertEquals("/passwords", obj.get(0).get("link"));
             Assert.assertEquals("Мои пароли", obj.get(0).get("name"));
@@ -231,6 +246,18 @@ public class ApiControllerTest extends TestCase {
 
             Assert.assertEquals("/guides", obj.get(2).get("link"));
             Assert.assertEquals("Инструкции", obj.get(2).get("name"));
+
+            Assert.assertEquals("/allusers", obj.get(3).get("link"));
+            Assert.assertEquals("Пользователи", obj.get(3).get("name"));
+
+            Assert.assertEquals("/createuser", obj.get(4).get("link"));
+            Assert.assertEquals("Создать пользователя", obj.get(4).get("name"));
+
+            Assert.assertEquals("/apps", obj.get(5).get("link"));
+            Assert.assertEquals("Приложения", obj.get(5).get("name"));
+
+            Assert.assertEquals("/createapp", obj.get(6).get("link"));
+            Assert.assertEquals("Создать Приложение", obj.get(6).get("name"));
         }
     }
 

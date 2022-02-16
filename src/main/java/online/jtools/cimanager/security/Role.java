@@ -13,15 +13,15 @@ import static online.jtools.cimanager.security.Permission.*;
  * Application roles
  */
 public enum Role {
-    ADMIN("admin", Arrays.asList(NEWS,
+    ADMIN("ADMIN", Arrays.asList(NEWS,
             PASSWORDS,
             GUIDES,
             ALL_USERS,
             CREATE_USER,
             APPS,
             CREATE_APP)),
-    GUEST("guest", Collections.singletonList(LOGIN)),
-    USER("user", Arrays.asList(NEWS,
+    GUEST("GUEST", Collections.singletonList(LOGIN)),
+    USER("USER", Arrays.asList(NEWS,
             PASSWORDS,
             GUIDES));
 

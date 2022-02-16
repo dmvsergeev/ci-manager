@@ -16,13 +16,12 @@ import online.jtools.cimanager.security.Role;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -110,7 +109,15 @@ public class ApiController {
     @GetMapping("topmenu")
     @NotNull
     public List<MenuLink> topmenu() {
-        final Role role = Role.of("user"); // FIXME
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        List<String> roles = new ArrayList<>();
+        for (GrantedAuthority permission : auth.getAuthorities()) {
+            roles.add(permission.getAuthority());
+        }
+
+        final Role role = Role.of(roles.get(0)); // FIXME
+
         return new Menu(Collections.singletonList(role))
                 .addLink(Permission.PASSWORDS, "Мои пароли", "/passwords")
                 .addLink(Permission.NEWS, "Новости", "/news")
@@ -151,11 +158,15 @@ public class ApiController {
         return mapper.createAppResponse(appDAO.save(app));
     }
 
-    @ExceptionHandler(CimanagerException.class)
+    @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     @NotNull
-    public ResponseError handleException(@NotNull CimanagerException ex, @NotNull  HttpServletResponse response) {
+    public ResponseError handleException(@NotNull RuntimeException ex, @NotNull  HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return new ResponseError(ex.getCode(), ex.getMessage());
+        if (ex instanceof CimanagerException) {
+            return new ResponseError(((CimanagerException)ex).getCode(), ex.getMessage());
+        } else {
+            return new ResponseError("unknown", ex.getMessage());
+        }
     }
 }

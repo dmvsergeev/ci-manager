@@ -5,7 +5,7 @@ VALUES
 
 INSERT INTO "public"."Roles"("id", "user_id","roles")
 VALUES
-('3', '1','"ADMIN","USER"'),
+('3', '1','ADMIN'),
 ('4', '2','USER');
 
 INSERT INTO "public"."Apps"("id", "name","url")
@@ -13,11 +13,11 @@ VALUES
 ('5', 'yandex mail','https://mail.yandex.ru'),
 ('6', 'flock','https://flock.com'),
 ('7', 'mc','https://online.moysklad.ru/'),
-('8', '1c',''),
-('9', 'amoCRM','https://marialeokidru.amocrm.ru/'),
-('10', 'site admin',''),
-('11', 'site stats',''),
-('12', 'dropbox','');
+('8', '1c','https://1c.ru'),
+('9', 'amoCRM','https://amocrm.ru/'),
+('10', 'site admin','https://localhost'),
+('11', 'site stats','https://localhost'),
+('12', 'dropbox','https://localhost');
 
 INSERT INTO "public"."Passwords"("id_app","id_user","password")
 VALUES
