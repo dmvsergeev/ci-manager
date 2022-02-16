@@ -5,7 +5,7 @@ VALUES
 
 INSERT INTO "public"."Roles"("id", "user_id","roles")
 VALUES
-('3', '1','ADMIN'),
+('3', '1','ADMIN,USER'),
 ('4', '2','USER');
 
 INSERT INTO "public"."Apps"("id", "name","url")

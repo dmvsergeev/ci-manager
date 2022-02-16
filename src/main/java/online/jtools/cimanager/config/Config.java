@@ -31,7 +31,7 @@ public class Config implements WebMvcConfigurer {
     public ITemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
-        templateResolver.setPrefix("/WEB-INF/views/");
+        templateResolver.setPrefix("classpath:/WEB-INF/");
         templateResolver.setSuffix(".html");
         return templateResolver;
     }
@@ -54,17 +54,10 @@ public class Config implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(@NotNull ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**", "/css/**")
-                .addResourceLocations("/WEB-INF/resources/", "/WEB-INF/css/");
-
-        registry.addResourceHandler("/resources/**", "/js/**")
-                .addResourceLocations("/resources/", "/WEB-INF/js/");
-
-        registry.addResourceHandler("/resources/**", "/src/**")
-                .addResourceLocations("/resources/", "/WEB-INF/views/src/");
-
-        registry.addResourceHandler("/resources/**", "/distr/**")
-                .addResourceLocations("/resources/", "/WEB-INF/views/distr/");
+        registry.addResourceHandler("classpath:/WEB-INF/css/**")
+                .addResourceLocations("/css/");
+        registry.addResourceHandler("classpath:/WEB-INF/js/**")
+                .addResourceLocations("/js/");
     }
 
     public void addViewControllers(@NotNull ViewControllerRegistry registry) {

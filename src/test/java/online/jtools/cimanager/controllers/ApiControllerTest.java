@@ -288,9 +288,7 @@ public class ApiControllerTest extends TestCase {
 
             //Verify request succeed
             Assert.assertEquals(200, result.getStatusCodeValue());
-
         }
-
     }
 
     static class Initializer
@@ -302,8 +300,5 @@ public class ApiControllerTest extends TestCase {
                     "spring.datasource.password=" + postgreSQLContainer.getPassword()
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
-
     }
-
-
 }

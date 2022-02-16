@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -109,16 +110,12 @@ public class ApiController {
     @GetMapping("topmenu")
     @NotNull
     public List<MenuLink> topmenu() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        final List<Role> roles = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .map(Role::of).collect(Collectors.toList());
 
-        List<String> roles = new ArrayList<>();
-        for (GrantedAuthority permission : auth.getAuthorities()) {
-            roles.add(permission.getAuthority());
-        }
-
-        final Role role = Role.of(roles.get(0)); // FIXME
-
-        return new Menu(Collections.singletonList(role))
+        return new Menu(roles)
                 .addLink(Permission.PASSWORDS, "Мои пароли", "/passwords")
                 .addLink(Permission.NEWS, "Новости", "/news")
                 .addLink(Permission.GUIDES, "Инструкции", "/guides")

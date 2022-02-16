@@ -15,7 +15,7 @@ spring.datasource.password=dbpassword12345
 
 spring.datasource.driver-class-name=org.postgresql.Driver
 
-spring.datasource.initialization-mode=EMBEDDED
+spring.datasource.initialization-mode=ALWAYS
 spring.datasource.schema=classpath*:database/schema.sql
 spring.datasource.data=classpath*:database/data.sql
 ``` 
