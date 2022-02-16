@@ -113,6 +113,9 @@ public class ApiController {
         final List<Role> roles = SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
+                .map(r -> r.split(","))
+                .flatMap(Arrays::stream)
+                .map(String::trim)
                 .map(Role::of).collect(Collectors.toList());
 
         return new Menu(roles)
