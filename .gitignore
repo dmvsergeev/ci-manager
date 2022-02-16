@@ -1,8 +1,8 @@
 # Project exclude paths
-node_modules/
-/src/main/webapp/WEB-INF/views/node/
-/src/main/resources/WEB-INF/js/main.js
+src/main/react/node_modules/
+src/main/react/node/
+src/main/resources/WEB-INF/js/main.js
 target/
 out/
 build/
-/config/application.properties
+config/application.properties

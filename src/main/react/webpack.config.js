@@ -4,7 +4,7 @@ module.exports = {
   mode: 'development',
   entry: path.join(__dirname, "src", "main.js"),
   output: {
-    path:path.resolve(__dirname, "../../../resources/WEB-INF/js"),
+    path:path.resolve(__dirname, "../resources/WEB-INF/js"),
   },
   module: {
     rules: [
