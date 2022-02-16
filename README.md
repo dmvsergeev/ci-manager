@@ -7,7 +7,7 @@ NOTE: please install docker on a CI-server
 mvn clean test
 ```
 ### First start
-#### please create config/application.properties
+#### create config/application.properties
 ``` 
 spring.datasource.url=jdbc:postgresql://localhost:5432/cimanager
 spring.datasource.username=dbuser
@@ -21,8 +21,7 @@ spring.datasource.data=classpath*:database/data.sql
 ``` 
 #### run
 ```bash
-mvn clean package
-mvn spring-boot:run
+mvn clean spring-boot:run
 ```
 
 
