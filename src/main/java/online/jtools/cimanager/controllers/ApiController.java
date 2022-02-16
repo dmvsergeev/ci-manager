@@ -1,9 +1,7 @@
 package online.jtools.cimanager.controllers;
 
 import online.jtools.cimanager.DAO.api.*;
-import online.jtools.cimanager.controllers.mapper.AppRestMapper;
-import online.jtools.cimanager.controllers.mapper.PasswordRestMapper;
-import online.jtools.cimanager.controllers.mapper.UserRestMapper;
+import online.jtools.cimanager.controllers.mapper.*;
 import online.jtools.cimanager.controllers.validator.AppValidator;
 import online.jtools.cimanager.controllers.validator.PasswordValidator;
 import online.jtools.cimanager.controllers.validator.UserValidator;
@@ -84,27 +82,30 @@ public class ApiController {
 
     @GetMapping("news")
     @NotNull
-    public List<News> news() {
+    public List<Map<String, String>> news() {
         //return new Execution(new User()).exec(Permission.NEWS, () -> newsDAO.getAll() );
-        return newsDAO.getAll();
+        return new NewsRestMapper().createNewsResponse(newsDAO.getAll());
     }
 
     @GetMapping("news/get/{id}")
     @NotNull
-    public News newsGet(@PathVariable("id") String id) {
-        return newsDAO.get(new DefaultIdentifier(id));
+    public Map<String, String> newsGet(@PathVariable("id") String id) {
+        final News news = newsDAO.get(new DefaultIdentifier(id));
+        return new NewsRestMapper().createNewsResponse(news);
     }
 
     @GetMapping("guides")
     @NotNull
-    public List<Guide> guides() {
-        return guidesDAO.getAll();
+    public List<Map<String, String>> guides() {
+        final List<Guide> guides = guidesDAO.getAll();
+        return new GuideRestMapper().createGuideResponse(guides);
     }
 
     @GetMapping("guides/get/{id}")
     @NotNull
-    public Guide guideGet(@PathVariable("id") String id) {
-        return guidesDAO.get(new DefaultIdentifier(id));
+    public Map<String, String> guideGet(@PathVariable("id") String id) {
+        final Guide guide = guidesDAO.get(new DefaultIdentifier(id));
+        return new GuideRestMapper().createGuideResponse(guide);
     }
 
     @GetMapping("topmenu")

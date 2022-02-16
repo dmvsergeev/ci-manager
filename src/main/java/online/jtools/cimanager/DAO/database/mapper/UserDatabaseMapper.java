@@ -13,7 +13,7 @@ public class UserDatabaseMapper implements RowMapper<User> {
     @NotNull
     @Override
     public User mapRow(@NotNull ResultSet rs, int rowNum) throws SQLException {
-        return new User(new DefaultIdentifier(rs.getString("user_id")),
+        return new User(new DefaultIdentifier(rs.getString("id_user")),
                 rs.getString("user_name"),
                 rs.getString("user_email"),
                 rs.getString("username"));

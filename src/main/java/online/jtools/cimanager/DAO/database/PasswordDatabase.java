@@ -33,7 +33,7 @@ public class PasswordDatabase implements PasswordDAO {
                 "a.id as id_app, " +
                 "a.name as app_name, " +
                 "a.url as app_url, " +
-                "p.password" +
+                "p.password " +
                 "FROM public.\"Users\" as u " +
                 "INNER JOIN public.\"Passwords\" AS p ON p.id_user = u.id " +
                 "INNER JOIN public.\"Apps\" AS a ON a.id = p.id_app " +
