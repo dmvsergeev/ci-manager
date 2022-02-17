@@ -25,12 +25,12 @@ class Guides extends Component {
                     </thead>
                     <tbody>
                 {guides_list.map(guide_item =>
-                    <tr key={guide_item.id.id}>
+                    <tr key={guide_item.id}>
                         <td>
-                        <a href={ '/guide?id_guide=' + guide_item.id.id}>
+                        <a href={ '/guide?id_guide=' + guide_item.id}>
                                                     <b>{guide_item.title}</b>
                                                 </a>
-                                                <a class="more" href={ '/guide?id_guide=' + guide_item.id.id}>
+                                                <a class="more" href={ '/guide?id_guide=' + guide_item.id}>
                                                     (подробнее)
                                                 </a>
                         </td>

@@ -29,8 +29,8 @@ class Allusers extends Component {
                         </thead>
                     <tbody>
                         {clients.map(client =>
-                            <tr key={client.id.id}>
-                                <td>{client.id.id}</td>
+                            <tr key={client.id}>
+                                <td>{client.id}</td>
                                 <td><b>{client.name}</b></td>
                                 <td>{client.email}</td>
                                 <td>{client.username}</td>

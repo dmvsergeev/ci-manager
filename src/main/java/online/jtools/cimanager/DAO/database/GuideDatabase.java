@@ -46,7 +46,9 @@ public class GuideDatabase implements GuideDAO {
     @Override
     public Guide get(@NotNull Identifier id) {
         final List<Guide> guides = jdbcTemplate.query("SELECT " +
-                "a.title, a.content, a.id as id_guide " +
+                "a.id as \"id_guide\", " +
+                "a.title as \"guide_title\", " +
+                "a.content as \"guide_content\" " +
                 "FROM public.\"Guides\" as a " +
                 "WHERE a.id = ?", new GuideDatabaseMapper(), id.toString());
 

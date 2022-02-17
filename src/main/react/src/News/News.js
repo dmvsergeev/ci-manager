@@ -25,13 +25,13 @@ class News extends Component {
                     </thead>
                     <tbody>
                 {news_list.map(news_item =>
-                    <tr key={news_item.id.id}>
+                    <tr key={news_item.id}>
                         <td>
-                        <a href={ '/story?id_news=' + news_item.id.id}>
+                        <a href={ '/story?id_news=' + news_item.id}>
                             <b>{news_item.title}</b>
                         </a>
 
-                        <a class="more" href={ '/story?id_news=' + news_item.id.id}>
+                        <a class="more" href={ '/story?id_news=' + news_item.id}>
                             (подробнее)
                         </a>
 

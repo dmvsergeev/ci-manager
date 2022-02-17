@@ -30,9 +30,9 @@ public class NewsDatabase implements NewsDAO {
     @Override
     public List<News> getAll() {
         return jdbcTemplate.query("SELECT " +
-                "a.id as id_news, " +
-                "a.title as news_title, " +
-                "a.content as news_content " +
+                "a.id as \"id_news\", " +
+                "a.title as \"news_title\", " +
+                "a.content as \"news_content\" " +
                 "FROM public.\"News\" as a ", new NewsDatabaseMapper());
     }
 
@@ -46,7 +46,9 @@ public class NewsDatabase implements NewsDAO {
     @Override
     public News get(@NotNull Identifier id) {
         List<News> news = jdbcTemplate.query("SELECT " +
-                "a.title, a.content, a.id as id_news " +
+                "a.id as \"id_news\", " +
+                "a.title as \"news_title\", " +
+                "a.content as \"news_content\" " +
                 "FROM public.\"News\" as a " +
                 "WHERE a.id = ?", new NewsDatabaseMapper(), id.toString());
         if (news.isEmpty()) {
