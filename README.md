@@ -38,6 +38,12 @@ postgres
 ```bash
 mvn clean spring-boot:run -DskipTests=true
 ```
+#### server run with properties
+```bash
+export SPRING_CONFIG_NAME=application,jdbc 
+export SPRING_CONFIG_LOCATION=file:///...ci-manager/config/application.properties 
+java -jar target/cimanager-1.0-SNAPSHOT.jar
+```
 
 ## web
 ### login
